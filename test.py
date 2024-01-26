@@ -3,6 +3,7 @@ import time
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
+from datetime import datetime
 
 capabilities = dict(
     platformName='Android',
@@ -14,6 +15,19 @@ capabilities = dict(
 
 appium_server_url = 'http://localhost:4723'
 
+
+
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+# Use a service account.
+cred = credentials.Certificate('firebase-admin-credential.json')
+
+app = firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
 class TestAppium(unittest.TestCase):
     def setUp(self) -> None:
         self.driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
@@ -23,6 +37,8 @@ class TestAppium(unittest.TestCase):
             self.driver.quit()
 
     def test_find_battery(self) -> None:
+        doc_ref = db.collection("users").document()
+        doc_ref.set({"name": "haley", "lastUpdated": datetime.now()})
 
         messages = []
 
@@ -58,9 +74,14 @@ class TestAppium(unittest.TestCase):
         self.driver.swipe(startx, starty, startx, endy)
         time.sleep(2)
 
-
+        order = 1
         for m in list(dict.fromkeys(messages)):
             print(m)
+
+            res = m.split(": ",1)
+            data = {"user": res[0], "message": res[1], "timestamp": datetime.now(), "order": order}
+            doc_ref.collection("messages").document().set(data)
+            order+=1
 
 
         # Scroll down

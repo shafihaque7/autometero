@@ -1,11 +1,94 @@
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from "vue";
+
+import useStore from "@src/store/store";
+import { fetchData } from "@src/store/defaults";
+
+import FadeTransition from "@src/components/ui/transitions/FadeTransition.vue";
+
+// Fixes
+// todo fix clicking back to close conversations.
+
+// future features:
+// todo add video calling
+// todo add stories
+
+// Refactoring code:
+// todo reorganize component structure
+// todo rerfactor make everything that can be a ui component into one.
+// todo refactor remove getters from utils file and add them to store folder.
+// todo improve the video component.
+
+// Accessability:
+// todo improve the way you view messages.
+// todo make multi-select more accessible.
+// todo make dropdown menus more accessible.
+// todo make modals more accessible.
+// todo make lists (i.e conversations, contacts, calls) more accessible.
+
+// SEO.
+// todo improve seo.
+
+// Performance:
+// todo add dynamic imports.
+// todo add chunking.
+
+const store = useStore();
+
+// update localStorage with state changes
+store.$subscribe((_mutation, state) => {
+  localStorage.setItem("chat", JSON.stringify(state));
+});
+
+// here we load the data from the server.
+onMounted(async () => {
+  store.status = "loading";
+
+  // fake server call
+  setTimeout(() => {
+    store.delayLoading = false;
+  });
+  const request = await fetchData();
+
+  store.$patch({
+    status: "success",
+    user: request.data.user,
+    conversations: request.data.conversations,
+    notifications: request.data.notifications,
+    archivedConversations: request.data.archivedConversations,
+  });
+});
+
+// the app height
+const height = ref(`${window.innerHeight}px`);
+
+// change the app height to the window hight.
+const resizeWindow = () => {
+  height.value = `${window.innerHeight}px`;
+};
+
+// and add the resize event when the component mounts.
+onMounted(() => {
+  window.addEventListener("resize", resizeWindow);
+});
+
+// remove the event when un-mounting the component.
+onUnmounted(() => {
+  window.removeEventListener("resize", resizeWindow);
+});
+</script>
+
 <template>
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav> -->
-  <router-view/>
+  <div :class="{ dark: store.settings.darkMode }">
+    <div
+      class="bg-white dark:bg-gray-800 transition-colors duration-500"
+      :style="{ height: height }"
+    >
+      <router-view v-slot="{ Component }">
+        <FadeTransition>
+          <component :is="Component" />
+        </FadeTransition>
+      </router-view>
+    </div>
+  </div>
 </template>
-
-<style>
-
-</style>
