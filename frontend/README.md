@@ -2,6 +2,11 @@
 
 ## Features ⚡
 
+Fix dependency issue using 
+```bash
+ npm install --legacy-peer-deps 
+```
+
 This template is packed with a lot of features including:
 
 - [x] Dark and light modes.
