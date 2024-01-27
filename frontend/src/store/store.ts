@@ -1,8 +1,11 @@
 import { defineStore } from "pinia";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
+// import { doc, getDoc, getDocs, collection, addDoc } from "firebase/firestore"
+// // the firestore instance
+// import db from '../firebaseInit'
 
-import defaults from "@src/store/defaults";
+import defaults, { conversations } from "@src/store/defaults";
 import type {
   IConversation,
   IContactGroup,

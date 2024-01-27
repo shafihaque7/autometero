@@ -36,7 +36,41 @@ class TestAppium(unittest.TestCase):
         if self.driver:
             self.driver.quit()
 
-    def test_find_battery(self) -> None:
+    def test_select_user(self) -> None:
+
+        xPathCounter = 1
+        for num in range(1,51):
+            xpathString = '(//android.view.ViewGroup[@resource-id="co.hinge.app:id/viewForeground"])[{0}]'.format(xPathCounter)
+            xPathCounter += 1
+
+            el = self.driver.find_element(by=AppiumBy.XPATH, value=xpathString)
+            el.click()
+            time.sleep(1)
+
+            el = self.driver.find_element(by=AppiumBy.XPATH,
+                                          value='//android.widget.TextView[@resource-id="co.hinge.app:id/pageTitle"]')
+            print(el.text)
+            time.sleep(1)
+
+            el = self.driver.find_element(by=AppiumBy.XPATH,
+                                          value='//android.widget.ImageView[@content-desc="Back to Matches"]')
+            el.click()
+            print(num)
+            time.sleep(2)
+            if num % 6 == 0:
+                size = self.driver.get_window_size()
+                starty = (size['height'] * 0.80)
+                endy = (size['height'] * 0.45)
+                startx = size['width'] / 2
+                self.driver.swipe(startx, starty, startx, endy)
+                time.sleep(2)
+            if xPathCounter == 6:
+                xPathCounter = 1
+
+
+
+
+    def test_read_messages(self) -> None:
         doc_ref = db.collection("users").document()
         doc_ref.set({"name": "haley", "lastUpdated": datetime.now()})
 

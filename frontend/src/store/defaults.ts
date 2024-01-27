@@ -1,3 +1,7 @@
+import { doc, getDoc, getDocs, collection, query, addDoc, orderBy } from "firebase/firestore"
+// the firestore instance
+import db from '../firebaseInit'
+
 export const defaultSettings = [
   {
     lastSeen: false,
@@ -702,6 +706,9 @@ export const conversations = [
   },
 ];
 
+
+
+
 export const archive = [
   {
     id: 3,
@@ -1089,6 +1096,41 @@ export const attachments = [
     url: "https://images.unsplash.com/photo-1559705421-4ae9bf6fabb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
   },
 ];
+
+
+
+
+const querySnapshot = await getDocs(query(collection(db, "users", "FXFEl1OPuctj205fTEBl", "messages"), orderBy("order")));
+console.log(querySnapshot)
+querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+  console.log(doc.id, " => ", doc.data());
+
+  let idCounter = 3
+
+  const someData = {
+    id: idCounter++,
+    content:
+      doc.data().message,
+    date: "5:00 pm",
+    state: "read",
+    sender: {
+      id: 1,
+      firstName: "Dawn",
+      lastName: "Sabrina",
+      lastSeen: new Date(),
+      email: "sabrina@gmail.com",
+      avatar:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+    }
+
+
+  }
+  conversations[3].messages.push(someData);
+
+
+});
+// console.log(conversations)
 
 export default {
   defaultSettings,

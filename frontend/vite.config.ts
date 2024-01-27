@@ -14,4 +14,7 @@ export default defineConfig({
       "@custom_types": resolve(rootDir, "src/@custom_types"),
     },
   },
+  build: {
+    target: "esnext",
+  }
 });
