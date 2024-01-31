@@ -1100,7 +1100,7 @@ export const attachments = [
 
 
 
-const querySnapshot = await getDocs(query(collection(db, "users", "FXFEl1OPuctj205fTEBl", "messages"), orderBy("order")));
+const querySnapshot = await getDocs(query(collection(db, "users", "GfS10vpxLzLrmAzfLLr9", "messages"), orderBy("order")));
 console.log(querySnapshot)
 querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots

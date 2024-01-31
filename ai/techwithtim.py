@@ -8,7 +8,7 @@ def start_gpt():
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system",
-             "content": "Imagine you are a guy on hinge, start a conversation and respond. The only thing you know about the girl is that she lives in Sacramento."},
+             "content": "You are a guy on hinge, start the conversation and the only thing you know is that the girl's name is Alanis and she is from sacramento. Have a conversation then eventually ask out for drinks after 5 to 10 messages. "},
         ]
     )
     return response.choices[0].message.content.strip()
