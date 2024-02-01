@@ -1,6 +1,7 @@
 import { doc, getDoc, getDocs, collection, query, addDoc, orderBy } from "firebase/firestore"
 // the firestore instance
 import db from '../firebaseInit'
+import axios from "axios"
 
 export const defaultSettings = [
   {
@@ -1037,7 +1038,7 @@ export const activeCall = {
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchData = async () => {
-  await delay(2000);
+  // await delay(2000);
 
   return await {
     data: {
@@ -1050,7 +1051,7 @@ export const fetchData = async () => {
 };
 
 export const updateAccount = async () => {
-  await delay(4000);
+  // await delay(4000);
 
   return await {
     data: {
@@ -1099,19 +1100,15 @@ export const attachments = [
 
 
 
-
-const querySnapshot = await getDocs(query(collection(db, "users", "GfS10vpxLzLrmAzfLLr9", "messages"), orderBy("order")));
-console.log(querySnapshot)
-querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
-
+const axiosData = await axios.get("http://127.0.0.1:5000/user/65b97b812d5ee8a9173907ec")
+const serverMessages = axiosData.data["messages"]
+serverMessages.forEach(function(msg){
   let idCounter = 3
 
   const someData = {
     id: idCounter++,
     content:
-      doc.data().message,
+    msg["message"],
     date: "5:00 pm",
     state: "read",
     sender: {
@@ -1124,13 +1121,10 @@ querySnapshot.forEach((doc) => {
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
     }
 
-
   }
   conversations[3].messages.push(someData);
+})
 
-
-});
-// console.log(conversations)
 
 export default {
   defaultSettings,

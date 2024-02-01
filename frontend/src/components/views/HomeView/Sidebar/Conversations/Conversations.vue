@@ -29,6 +29,8 @@ const openArchive = ref(false);
 // the filtered list of conversations.
 const filteredConversations: Ref<IConversation[]> = ref(store.conversations);
 
+console.log("filtered conversation: ", filteredConversations)
+
 // filter the list of conversation based on search text.
 watch([keyword, openArchive], () => {
   if (openArchive.value) {

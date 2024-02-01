@@ -65,8 +65,10 @@ const contextConfig = {
 const handleSelectConversation = () => {
   showContextMenu.value = false;
 
-  if (props.handleConversationChange)
+  if (props.handleConversationChange) {
+    console.log("The conversation id is: ",props.conversation.id)
     props.handleConversationChange(props.conversation.id);
+  }
 };
 
 // last message in conversation to display

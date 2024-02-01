@@ -12,6 +12,7 @@
     "@heroicons/vue": "^2.0.18",
     "@videojs-player/vue": "^1.0.0",
     "@vueuse/integrations": "^10.4.1",
+    "axios": "^1.6.7",
     "click-outside-vue3": "^4.0.1",
     "firebase": "^10.7.2",
     "focus-trap": "^7.5.2",
