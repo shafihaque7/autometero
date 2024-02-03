@@ -705,6 +705,93 @@ export const conversations = [
       },
     ],
   },
+  {
+    id: 8,
+    type: "couple",
+    draftMessage: "",
+    contacts: [
+      {
+        id: 5,
+        email: "user@gmail.com",
+        firstName: "Ena",
+        lastName: "",
+        lastSeen: new Date(),
+        avatar:
+          "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      },
+      {
+        id: 1,
+        firstName: "Dawn",
+        lastName: "Sabrina",
+        lastSeen: new Date(),
+        email: "sabrina@gmail.com",
+        avatar:
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      },
+    ],
+    messages: [
+      {
+        id: 1,
+        content: "Can you send me a link",
+        date: "8:15 am",
+        state: "read",
+        sender: {
+          id: 1,
+          firstName: "Dawn",
+          lastName: "Sabrina",
+          lastSeen: new Date(),
+          email: "sabrina@gmail.com",
+          avatar:
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        },
+      },
+      {
+        id: 2,
+        content: "So i found this great video online",
+        date: "1:00 pm",
+        state: "read",
+        sender: {
+          id: 5,
+          email: "user@gmail.com",
+          firstName: "Dylan",
+          lastName: "Billy",
+          lastSeen: new Date(),
+          avatar:
+            "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        },
+      },
+      {
+        id: 3,
+        content: "It’s about stopping drugs",
+        date: "1:05 pm",
+        state: "read",
+        sender: {
+          id: 5,
+          email: "user@gmail.com",
+          firstName: "Dylan",
+          lastName: "Billy",
+          lastSeen: new Date(),
+          avatar:
+            "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        },
+      },
+      {
+        id: 4,
+        content: "Can you send me a link",
+        date: "1:15 pm",
+        state: "read",
+        sender: {
+          id: 1,
+          firstName: "Dawn",
+          lastName: "Sabrina",
+          lastSeen: new Date(),
+          email: "sabrina@gmail.com",
+          avatar:
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        },
+      },
+    ]
+  }
 ];
 
 
@@ -1097,6 +1184,11 @@ export const attachments = [
     url: "https://images.unsplash.com/photo-1559705421-4ae9bf6fabb5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80",
   },
 ];
+
+const allUsers = await axios.get("http://127.0.0.1:5000")
+console.log(allUsers)
+
+
 
 
 

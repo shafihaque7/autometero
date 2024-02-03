@@ -11,7 +11,7 @@ print(len(someList))
 
 
 
-print("Look the code works well")
+print("The code works pretty instantly ")
 
 
 CONNECTION_STRING = os.environ.get("COSMOS_CONNECTION_STRING")
