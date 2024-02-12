@@ -2,6 +2,7 @@
 import type { IAttachment, IConversation, IRecording } from "@src/types";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
+import axios from "axios"
 
 import {
   getAvatar,
@@ -21,6 +22,7 @@ import {
 import Typography from "@src/components/ui/data-display/Typography.vue";
 import Dropdown from "@src/components/ui/navigation/Dropdown/Dropdown.vue";
 import DropdownLink from "@src/components/ui/navigation/Dropdown/DropdownLink.vue";
+import { conversations } from "@src/store/defaults";
 
 const props = defineProps<{
   conversation: IConversation;
@@ -62,12 +64,50 @@ const contextConfig = {
 };
 
 // (event) select this conversation.
-const handleSelectConversation = () => {
+const handleSelectConversation = async () => {
   showContextMenu.value = false;
 
   if (props.handleConversationChange) {
-    console.log("The conversation id is: ",props.conversation.id)
+    console.log("The conversation id is: ", props.conversation.id)
+
+    const conversationIndex = getConversationIndex(props.conversation.id)
+    // store.conversations[conversationIndex].messages = []
+    const currentConversation = store.conversations[conversationIndex]
+    const axiosData = await axios.get("http://127.0.0.1:5000/user/"+ currentConversation["objectId"])
+    const serverMessages = axiosData.data["messages"]
+    console.log(serverMessages)
+    console.log(currentConversation)
+    const allMessages = []
+    serverMessages.forEach(function(msg) {
+      let idCounter = 3
+
+      const someData = {
+        id: idCounter++,
+        content:
+          msg["message"],
+        date: "5:00 pm",
+        state: "read",
+        sender: {
+          id: (msg["user"] == "You") ? 1 : currentConversation["contacts"]["id"],
+          firstName: "Dawn",
+          lastName: "Sabrina",
+          lastSeen: new Date(),
+          email: "sabrina@gmail.com",
+          avatar:
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        }
+
+      }
+      // store.conversations[conversationIndex].messages.push(someData);
+      allMessages.push(someData)
+
+    })
+    store.conversations[conversationIndex].messages = allMessages
+
     props.handleConversationChange(props.conversation.id);
+
+
+
   }
 };
 

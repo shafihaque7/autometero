@@ -1,14 +1,29 @@
+import json
+
 from bson import ObjectId
-from flask import Flask
+from flask import Flask, request
 import pymongo
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 import time
 from flask_cors import CORS
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+import os
+import re
 
+# Flask initialization
 app = Flask(__name__)
+
 CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+# Open AI initialization
+load_dotenv()
+# api_key = os.getenv('OPENAI_API_KEY')
+api_key = "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"
+chat_model = ChatOpenAI(openai_api_key=api_key)
 
 # Database connection stuff
 CONNECTION_STRING = "mongodb://hingeautomation:ti00pSXB7n8NGKPpDHPU0yjtrelS8N99zLf7pDNYtuEGC96mgkg2hgBh5hzoFVow6EBOJES1cpXZACDbatPdqg==@hingeautomation.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@hingeautomation@"
@@ -50,7 +65,7 @@ capabilities = dict(
     language='en',
     locale='US'
 )
-appium_server_url = 'http://localhost:4723'
+appium_server_url = 'http://104.42.212.81:4723'
 driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
 
 @app.route("/")
@@ -78,6 +93,89 @@ def get_user(user_id):
         "messages": user["messages"]
     }
     return data
+
+@app.route("/ai/user/<user_id>")
+def get_ai_suggested_messages(user_id):
+    user = collection.find_one({"_id": ObjectId(user_id)})
+
+    messages = user["messages"]
+
+    messageString = ""
+    for m in messages:
+        messageString += m["user"] + ": " + m["message"] + "\n"
+
+
+    requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me 3 example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
+    request = requestToFormat.format(name=user["name"], messageString = messageString)
+
+
+    result = chat_model.predict(request)
+    print("result: ", str(result))
+
+
+
+    return json.loads(result)
+
+@app.route("/appium/sendtext", methods=['POST'])
+def send_text():
+    data = request.json
+    print(data.get('userId'))
+    print(data.get('messageToSend'))
+
+    user = collection.find_one({"_id": ObjectId(data.get('userId'))})
+    name = user["name"]
+    lastMessageShownOnHinge = user["lastMessageShownOnHinge"]
+    print(lastMessageShownOnHinge)
+    select_user_based_on_name_and_last_message(name, lastMessageShownOnHinge, data.get("messageToSend"))
+
+    return data
+
+def type_text(text) -> None:
+
+    textbox = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="co.hinge.app:id/messageComposition"]')
+    textbox.send_keys(text)
+
+def select_user_based_on_name_and_last_message(nameToSearch, lastMessageToSearch, messageToSend):
+
+    while True:
+
+        usersOnScreen = driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
+        numberOfUsersOnScreen = len(usersOnScreen)
+
+        for xPathCounter in range(1, numberOfUsersOnScreen + 1):
+            xpathString = '(//android.view.ViewGroup[@resource-id="co.hinge.app:id/viewForeground"])[{0}]'.format(
+                xPathCounter)
+
+            print("xpathString: " + str(xpathString))
+
+            try:
+                el = driver.find_element(by=AppiumBy.XPATH, value=xpathString)
+                name = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textSubjectName')
+                print("name text from users screen: ", name.text)
+
+                lastMessage = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
+                print(lastMessage.text)
+
+                if nameToSearch == name.text and lastMessageToSearch == lastMessage.text:
+
+                    el.click()
+                    print("Found and clicked")
+                    time.sleep(1)
+                    type_text(messageToSend)
+                    return
+
+
+
+            except:
+                print("Failed on xpath: " + xpathString)
+                continue
+        size = driver.get_window_size()
+        starty = (size['height'] * 0.80)
+        endy = (size['height'] * 0.50)
+        startx = size['width'] / 2
+        driver.swipe(startx, starty, startx, endy)
+        time.sleep(2)
+
 
 @app.route("/appium")
 def get_appium_users():
@@ -137,4 +235,6 @@ def get_appium_users():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # app.run(debug=True, port=5000)
+    # app.run()
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))

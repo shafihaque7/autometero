@@ -4,7 +4,7 @@ import type { IConversation } from "@src/types";
 
 import useStore from "@src/store/store";
 import { ref, inject, onMounted } from "vue";
-import { getConversationIndex } from "@src/utils";
+import { getConversationIndex, getConversationObjectId } from "@src/utils";
 
 import {
   CheckIcon,
@@ -22,6 +22,7 @@ import ScaleTransition from "@src/components/ui/transitions/ScaleTransition.vue"
 import ReplyMessage from "@src/components/views/HomeView/Chat/ChatBottom/ReplyMessage.vue";
 import EmojiPicker from "@src/components/ui/inputs/EmojiPicker/EmojiPicker.vue";
 import Textarea from "@src/components/ui/inputs/Textarea.vue";
+import axios from "axios";
 
 const store = useStore();
 
@@ -66,14 +67,30 @@ const handleClickOutside = (event: Event) => {
 
 // (event) set the draft message equals the content of the text area
 const handleSetDraft = () => {
-  const index = getConversationIndex(activeConversation.id);
-  if (index !== undefined) {
-    store.conversations[index].draftMessage = value.value;
-  }
+  console.log("handle set draft called")
+  // const index = getConversationIndex(activeConversation.id);
+  // if (index !== undefined) {
+  //   store.conversations[index].draftMessage = value.value;
+  // }
 };
+
+const sendMessage = async () => {
+  console.log("Sending message", activeConversation.draftMessage, activeConversation)
+
+  const conversationObjectId = getConversationObjectId(activeConversation.id)
+  console.log("conversation object id is", conversationObjectId)
+
+  const axiosData = await axios.post("http://127.0.0.1:5000/appium/sendtext", {
+    "userId": conversationObjectId,
+    "messageToSend": activeConversation.draftMessage
+  })
+
+}
 
 onMounted(() => {
   value.value = activeConversation.draftMessage;
+
+
 });
 </script>
 
@@ -119,10 +136,21 @@ onMounted(() => {
       <!--message textarea-->
       <div class="grow md:mr-5 xs:mr-4 self-end" v-if="!recording">
         <div class="relative">
+<!--          <Textarea-->
+<!--            v-model="value"-->
+<!--            @input="handleSetDraft"-->
+<!--            :value="value"-->
+<!--            class="max-h-[5rem] pr-[3.125rem] resize-none scrollbar-hidden"-->
+<!--            auto-resize-->
+<!--            cols="30"-->
+<!--            rows="1"-->
+<!--            placeholder="Write your message here"-->
+<!--            aria-label="Write your message here"-->
+<!--          />-->
           <Textarea
-            v-model="value"
+            v-model="activeConversation.draftMessage"
             @input="handleSetDraft"
-            :value="value"
+            :value="activeConversation.draftMessage"
             class="max-h-[5rem] pr-[3.125rem] resize-none scrollbar-hidden"
             auto-resize
             cols="30"
@@ -211,6 +239,7 @@ onMounted(() => {
         <!--send message button-->
         <IconButton
           v-if="!recording"
+          @click="sendMessage"
           class="group w-7 h-7 bg-indigo-300 hover:bg-indigo-400 focus:bg-indigo-400 dark:focus:bg-indigo-300 dark:bg-indigo-400 dark:hover:bg-indigo-400 active:scale-110"
           variant="ghost"
           title="send message"

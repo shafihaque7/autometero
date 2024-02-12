@@ -125,6 +125,16 @@ export const getConversationIndex = (
   return conversationIndex;
 };
 
+export const getConversationObjectId = (
+  conversationId: number) : string => {
+  const store = useStore();
+  const conversationIndex = getConversationIndex(conversationId)
+  const currentConversation = store.conversations[conversationIndex]
+  return currentConversation["objectId"]
+
+};
+
+
 /**
  * takes a call object and returns all the members
  * of the call except the authenticated user.

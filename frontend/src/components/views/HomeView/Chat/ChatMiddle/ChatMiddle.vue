@@ -2,11 +2,14 @@
 import type { IConversation, IMessage } from "@src/types";
 import type { Ref } from "vue";
 import { inject, onMounted, ref } from "vue";
+import axios from "axios"
 
 import useStore from "@src/store/store";
 
 import Message from "@src/components/views/HomeView/Chat/ChatMiddle/Message/Message.vue";
 import TimelineDivider from "@src/components/views/HomeView/Chat/ChatMiddle/TimelineDivider.vue";
+import Typography from "@src/components/ui/data-display/Typography.vue";
+import { getConversationObjectId } from "@src/utils";
 
 const props = defineProps<{
   handleSelectMessage: (messageId: number) => void;
@@ -15,6 +18,8 @@ const props = defineProps<{
 }>();
 
 const store = useStore();
+
+const aiMessages = ref([])
 
 const container: Ref<HTMLElement | null> = ref(null);
 
@@ -45,11 +50,34 @@ const renderDivider = (index: number, previousIndex: number): boolean => {
   }
 };
 
+const loadAIData = async () => {
+
+  const conversationObjectId = getConversationObjectId(activeConversation.id)
+  console.log("conversation object id is", conversationObjectId)
+
+  const axiosData = await axios.get("http://127.0.0.1:5000/ai/user/" + conversationObjectId)
+  // console.log(axiosData.data)
+
+  aiMessages.value = axiosData.data
+
+  console.log(aiMessages.value)
+}
+
+const changeDraftMessage = (aimsg:string) => {
+  activeConversation.draftMessage = aimsg
+  // console.log(aimsg)
+  console.log("active conversation, ",activeConversation)
+
+}
+
 // scroll messages to bottom.
 onMounted(() => {
   (container.value as HTMLElement).scrollTop = (
     container.value as HTMLElement
   ).scrollHeight;
+
+  loadAIData()
+
 });
 </script>
 
@@ -75,5 +103,32 @@ onMounted(() => {
         :handle-deselect-message="handleDeselectMessage"
       />
     </div>
+
+    <div class="w-full my-7 flex items-center justify-center">
+      <div
+        class="w-full h-0 border-t border-dashed dark:border-gray-600 dark:bg-opacity-0"
+      ></div>
+
+      <Typography variant="body-4" class="mx-5"> AI Message Previews </Typography>
+
+      <div
+        class="w-full h-0 border-t border-dashed dark:border-gray-600 dark:bg-opacity-0"
+      ></div>
+    </div>
+    <div v-for="aimsg in aiMessages">
+     <div class="xs:mb-6 md:mb-5 flex justify-end">
+
+
+      <a href="#" @click="changeDraftMessage(aimsg)" class="block p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-700 lg:mb-0">
+         <p class="font-normal text-gray-700 dark:text-gray-400">{{ aimsg}}</p>
+       </a>
+
+    </div>
+
+     </div>
+
+
+
+
   </div>
 </template>

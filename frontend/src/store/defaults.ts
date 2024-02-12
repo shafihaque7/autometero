@@ -1185,25 +1185,27 @@ export const attachments = [
   },
 ];
 
-const allUsers = await axios.get("http://127.0.0.1:5000")
-console.log(allUsers)
-
-
-
-
-
-const axiosData = await axios.get("http://127.0.0.1:5000/user/65b97b812d5ee8a9173907ec")
-const serverMessages = axiosData.data["messages"]
-serverMessages.forEach(function(msg){
-  let idCounter = 3
-
-  const someData = {
-    id: idCounter++,
-    content:
-    msg["message"],
-    date: "5:00 pm",
-    state: "read",
-    sender: {
+const allUsersResponse = await axios.get("http://127.0.0.1:5000")
+const allUsers = allUsersResponse.data
+let idNumber = 9
+let contactsNumber :number = 11
+allUsers.forEach(function(user){
+  const userData = {
+    id: idNumber +=1,
+    objectId: user["id"],
+    type: "couple",
+    draftMessage: "",
+    contacts: [
+    {
+      id: contactsNumber,
+      email: "user@gmail.com",
+      firstName: user["name"],
+      lastName: "",
+      lastSeen: new Date(),
+      avatar:
+        "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+    },
+    {
       id: 1,
       firstName: "Dawn",
       lastName: "Sabrina",
@@ -1211,11 +1213,60 @@ serverMessages.forEach(function(msg){
       email: "sabrina@gmail.com",
       avatar:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-    }
-
+    },
+  ],
+    messages: [
+    {
+      id: 1,
+      content: user["lastMessage"],
+      date: "1:00 pm",
+      state: "read",
+      sender: {
+        id: contactsNumber+=1,
+        email: "user@gmail.com",
+        firstName: user["firstName"],
+        lastName: "",
+        lastSeen: new Date(),
+        avatar:
+          "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      },
+    },
+  ]
   }
-  conversations[3].messages.push(someData);
+  conversations.push(userData)
+
+
+
 })
+
+
+
+
+
+// const axiosData = await axios.get("http://127.0.0.1:5000/user/65b97b812d5ee8a9173907ec")
+// const serverMessages = axiosData.data["messages"]
+// serverMessages.forEach(function(msg){
+//   let idCounter = 3
+//
+//   const someData = {
+//     id: idCounter++,
+//     content:
+//     msg["message"],
+//     date: "5:00 pm",
+//     state: "read",
+//     sender: {
+//       id: 1,
+//       firstName: "Dawn",
+//       lastName: "Sabrina",
+//       lastSeen: new Date(),
+//       email: "sabrina@gmail.com",
+//       avatar:
+//         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+//     }
+//
+//   }
+//   conversations[3].messages.push(someData);
+// })
 
 
 export default {

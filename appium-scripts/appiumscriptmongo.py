@@ -13,7 +13,8 @@ capabilities = dict(
     locale='US'
 )
 
-appium_server_url = 'http://localhost:4723'
+# appium_server_url = 'http://localhost:4723'
+appium_server_url = 'http://104.42.212.81:4723'
 from random import randint
 
 import pymongo
@@ -71,8 +72,53 @@ class TestAppium(unittest.TestCase):
 
 
 
-    def test_select_user(self) -> None:
+    def test_type_text(self) -> None:
 
+        textbox = self.driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="co.hinge.app:id/messageComposition"]')
+        textbox.send_keys("That's a handsome dude")
+
+    def test_select_user_based_on_name_and_last_message(self) -> None:
+        nameToSearch = "Alanis"
+        lastMessageToSearch = "I started choir in middle school…"
+
+        while True:
+
+            usersOnScreen = self.driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
+            numberOfUsersOnScreen = len(usersOnScreen)
+
+            for xPathCounter in range(1, numberOfUsersOnScreen + 1):
+                xpathString = '(//android.view.ViewGroup[@resource-id="co.hinge.app:id/viewForeground"])[{0}]'.format(
+                    xPathCounter)
+
+                print("xpathString: " + str(xpathString))
+
+                try:
+                    el = self.driver.find_element(by=AppiumBy.XPATH, value=xpathString)
+                    name = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textSubjectName')
+                    print("name text from users screen: ", name.text)
+
+                    lastMessage = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
+                    print(lastMessage.text)
+
+                    if nameToSearch == name.text and lastMessageToSearch == lastMessage.text:
+
+                        el.click()
+                        print("Found and clicked")
+                        return
+
+
+
+                except:
+                    print("Failed on xpath: " + xpathString)
+                    continue
+            size = self.driver.get_window_size()
+            starty = (size['height'] * 0.80)
+            endy = (size['height'] * 0.50)
+            startx = size['width'] / 2
+            self.driver.swipe(startx, starty, startx, endy)
+            time.sleep(2)
+
+    def test_select_first_50_user_and_read_message(self) -> None:
         totalNumberOfUsers = 50
         currentUserCount = 1
         allGirls = []
@@ -94,6 +140,8 @@ class TestAppium(unittest.TestCase):
 
                     print("xpathString: " + str(xpathString))
 
+                    lastMessageText = None
+
                     try:
                         el = self.driver.find_element(by=AppiumBy.XPATH, value=xpathString)
                         name = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textSubjectName')
@@ -101,6 +149,7 @@ class TestAppium(unittest.TestCase):
 
                         lastMessage = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
                         print(lastMessage.text)
+                        lastMessageText = lastMessage.text
 
                         userInfo = name.text + " : " + lastMessage.text
 
@@ -117,7 +166,7 @@ class TestAppium(unittest.TestCase):
                     el.click()
                     time.sleep(1)
 
-                    self.test_read_messages()
+                    self.test_read_messages(lastMessageText)
 
 
                     el = self.driver.find_element(by=AppiumBy.XPATH,
@@ -143,7 +192,7 @@ class TestAppium(unittest.TestCase):
 
 
 
-    def test_read_messages(self) -> None:
+    def test_read_messages(self, lastMessageShownOnHinge) -> None:
 
         el = self.driver.find_element(by=AppiumBy.XPATH,
                                       value='//android.widget.TextView[@resource-id="co.hinge.app:id/pageTitle"]')
@@ -199,6 +248,7 @@ class TestAppium(unittest.TestCase):
 
         user = {
             "name": nameOfThePerson,
+            "lastMessageShownOnHinge": lastMessageShownOnHinge,
             "lastUpdated": datetime.now(),
             "messages": messagesSorted
         }
