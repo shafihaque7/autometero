@@ -58,6 +58,7 @@ export interface IMessage {
 
 export interface IConversation {
   id: number;
+  objectId: string;
   type: string;
   name?: string;
   avatar?: string;

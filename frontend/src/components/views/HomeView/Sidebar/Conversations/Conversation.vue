@@ -73,7 +73,7 @@ const handleSelectConversation = async () => {
     const conversationIndex = getConversationIndex(props.conversation.id)
     // store.conversations[conversationIndex].messages = []
     const currentConversation = store.conversations[conversationIndex]
-    const axiosData = await axios.get("http://127.0.0.1:5000/user/"+ currentConversation["objectId"])
+    const axiosData = await axios.get("http://104.42.212.81:8080/user/"+ currentConversation["objectId"])
     const serverMessages = axiosData.data["messages"]
     console.log(serverMessages)
     console.log(currentConversation)

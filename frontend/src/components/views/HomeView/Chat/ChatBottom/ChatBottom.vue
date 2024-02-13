@@ -80,7 +80,7 @@ const sendMessage = async () => {
   const conversationObjectId = getConversationObjectId(activeConversation.id)
   console.log("conversation object id is", conversationObjectId)
 
-  const axiosData = await axios.post("http://127.0.0.1:5000/appium/sendtext", {
+  const axiosData = await axios.post("http://104.42.212.81:8080/appium/sendtext", {
     "userId": conversationObjectId,
     "messageToSend": activeConversation.draftMessage
   })

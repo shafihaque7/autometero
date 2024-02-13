@@ -128,7 +128,10 @@ export const getConversationIndex = (
 export const getConversationObjectId = (
   conversationId: number) : string => {
   const store = useStore();
-  const conversationIndex = getConversationIndex(conversationId)
+  let conversationIndex = getConversationIndex(conversationId)
+  if (conversationIndex === undefined) {
+    conversationIndex = 0
+  }
   const currentConversation = store.conversations[conversationIndex]
   return currentConversation["objectId"]
 

@@ -1185,7 +1185,7 @@ export const attachments = [
   },
 ];
 
-const allUsersResponse = await axios.get("http://127.0.0.1:5000")
+const allUsersResponse = await axios.get("http://104.42.212.81:8080")
 const allUsers = allUsersResponse.data
 let idNumber = 9
 let contactsNumber :number = 11
