@@ -37,4 +37,16 @@ docker container start androidemu
 https://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session
 tmux
 
+#Tmux stuff
+# Creating new session with name bob
+tmux new -s bob
+tmux ls
+tmux a
+ctrl b + d
+tmux a -t 0
+tmux kill-session -t bob
+
+ctr b + % // for new window
+
+
 
