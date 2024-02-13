@@ -25,12 +25,6 @@ GET http://127.0.0.1:5000
 Accept: application/json
 
 ###
-POST https://adoniswebapp.azurewebsites.net/appium/sendtext
-Content-Type: application/json
-
-{
-  "userId":  "65c13a0735045765257fe90a",
-  "messageToSend" : "Hello how are you"
-
-
-}
+###
+GET http://104.42.212.81:8080/user/65c13a1535045765257fe90c
+Accept: application/json

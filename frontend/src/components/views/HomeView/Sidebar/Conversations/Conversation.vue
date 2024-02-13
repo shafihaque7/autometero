@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IAttachment, IConversation, IRecording } from "@src/types";
+import { IAttachment, IConversation, IMessage, IRecording } from "@src/types";
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
 import axios from "axios"
@@ -72,37 +72,41 @@ const handleSelectConversation = async () => {
 
     const conversationIndex = getConversationIndex(props.conversation.id)
     // store.conversations[conversationIndex].messages = []
-    const currentConversation = store.conversations[conversationIndex]
-    const axiosData = await axios.get("http://104.42.212.81:8080/user/"+ currentConversation["objectId"])
-    const serverMessages = axiosData.data["messages"]
-    console.log(serverMessages)
-    console.log(currentConversation)
-    const allMessages = []
-    serverMessages.forEach(function(msg) {
-      let idCounter = 3
+    if (conversationIndex !== undefined) {
+      const currentConversation = store.conversations[conversationIndex];
+      if (currentConversation.objectId !== undefined) {
+      const axiosData = await axios.get("http://104.42.212.81:8080/user/" + currentConversation.objectId)
+      const serverMessages = axiosData.data["messages"]
+      console.log(serverMessages)
+      console.log(currentConversation)
+      const allMessages: IMessage[] = []
+      serverMessages.forEach(function(msg: any) {
+        let idCounter = 3
 
-      const someData = {
-        id: idCounter++,
-        content:
-          msg["message"],
-        date: "5:00 pm",
-        state: "read",
-        sender: {
-          id: (msg["user"] == "You") ? 1 : currentConversation["contacts"]["id"],
-          firstName: "Dawn",
-          lastName: "Sabrina",
-          lastSeen: new Date(),
-          email: "sabrina@gmail.com",
-          avatar:
-            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        const someData = {
+          id: idCounter++,
+          content:
+            msg["message"],
+          date: "5:00 pm",
+          state: "read",
+          sender: {
+            id: (msg["user"] == "You") ? 1 : currentConversation.contacts[0].id,
+            firstName: "Dawn",
+            lastName: "Sabrina",
+            lastSeen: new Date(),
+            email: "sabrina@gmail.com",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+          }
+
         }
+        // store.conversations[conversationIndex].messages.push(someData);
+        allMessages.push(someData)
 
+      })
+      store.conversations[conversationIndex].messages = allMessages
       }
-      // store.conversations[conversationIndex].messages.push(someData);
-      allMessages.push(someData)
-
-    })
-    store.conversations[conversationIndex].messages = allMessages
+    }
 
     props.handleConversationChange(props.conversation.id);
 

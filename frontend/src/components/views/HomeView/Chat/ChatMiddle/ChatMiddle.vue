@@ -53,14 +53,16 @@ const renderDivider = (index: number, previousIndex: number): boolean => {
 const loadAIData = async () => {
 
   const conversationObjectId = getConversationObjectId(activeConversation.id)
-  console.log("conversation object id is", conversationObjectId)
+  if (conversationObjectId !== undefined) {
+    console.log("conversation object id is", conversationObjectId)
 
-  const axiosData = await axios.get("http://104.42.212.81:8080/ai/user/" + conversationObjectId)
-  // console.log(axiosData.data)
+    const axiosData = await axios.get("http://104.42.212.81:8080/ai/user/" + conversationObjectId)
+    // console.log(axiosData.data)
 
-  aiMessages.value = axiosData.data
+    aiMessages.value = axiosData.data
 
-  console.log(aiMessages.value)
+    console.log(aiMessages.value)
+  }
 }
 
 const changeDraftMessage = (aimsg:string) => {
