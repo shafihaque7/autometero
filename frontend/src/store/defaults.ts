@@ -433,7 +433,7 @@ allUsers.forEach(function(user: any){
     objectId: user["id"],
     type: "couple",
     draftMessage: "",
-    unread: 2,
+    unread: user["unread"],
     contacts: [
     {
       id: contactsNumber,
