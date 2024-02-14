@@ -120,6 +120,11 @@ export const archive = [];
 
 export const notifications = [
   {
+    flag: "added-to-group",
+    title: "Message being sent to Laura",
+    message: "What's your favorite food in sac?"
+  },
+  {
     flag: "security",
     title: "Recent Login",
     message: "there was a recent login to you account from this device",
@@ -428,6 +433,7 @@ allUsers.forEach(function(user: any){
     objectId: user["id"],
     type: "couple",
     draftMessage: "",
+    unread: 2,
     contacts: [
     {
       id: contactsNumber,

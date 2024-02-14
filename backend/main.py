@@ -73,11 +73,18 @@ def get_all_users():
     res = []
 
     for user in collection.find():
+        # See if it's my turn. Check if the last message was the girl
+        unread = 0
+        messages = user["messages"]
+        if len(messages) > 0 and messages[-1]["user"] != "You":
+            unread = 1
+
         data = {
             "id": str(user["_id"]),
             "name": user["name"],
             "lastUpdated": user["lastUpdated"],
-            "lastMessage": user["lastMessageShownOnHinge"]
+            "lastMessage": user["lastMessageShownOnHinge"],
+            "unread": unread
         }
         print(user)
         res.append(data)

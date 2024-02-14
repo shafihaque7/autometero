@@ -1,4 +1,4 @@
-POST http://127.0.0.1:5000/appium/sendtext
+POST http://127.0.0.1:8080/appium/sendtext
 Content-Type: application/json
 
 {
@@ -9,19 +9,19 @@ Content-Type: application/json
 }
 
 ###
-GET http://127.0.0.1:5000/appium
+GET http://127.0.0.1:8080/appium
 Accept: application/json
 
 ###
-GET http://127.0.0.1:5000/user/65b97a812d5ee8a9173907d4
+GET http://127.0.0.1:8080/user/65b97a812d5ee8a9173907d4
 Accept: application/json
 
 ###
-GET http://127.0.0.1:5000/ai/user/65c13a0735045765257fe90a
+GET http://127.0.0.1:8080/ai/user/65c13a0735045765257fe90a
 Accept: application/json
 
 ###
-GET http://127.0.0.1:5000
+GET http://127.0.0.1:8080
 Accept: application/json
 
 ###

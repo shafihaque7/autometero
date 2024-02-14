@@ -117,13 +117,15 @@ onMounted(() => {
         class="w-full h-0 border-t border-dashed dark:border-gray-600 dark:bg-opacity-0"
       ></div>
     </div>
+
+
     <div v-for="aimsg in aiMessages">
      <div class="xs:mb-6 md:mb-5 flex justify-end">
 
 
-      <a href="#" @click="changeDraftMessage(aimsg)" class="block p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-700 lg:mb-0">
+      <button @click="changeDraftMessage(aimsg)" class="block p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-700 lg:mb-0">
          <p class="font-normal text-gray-700 dark:text-gray-400">{{ aimsg}}</p>
-       </a>
+       </button>
 
     </div>
 
