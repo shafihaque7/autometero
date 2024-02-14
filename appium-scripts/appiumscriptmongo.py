@@ -27,6 +27,8 @@ CONNECTION_STRING = "mongodb://hingeautomation:ti00pSXB7n8NGKPpDHPU0yjtrelS8N99z
 DB_NAME = "hingeautomation"
 COLLECTION_NAME = "users"
 
+COLLECTION_NAME_2 = "automatedMessages"
+
 client = pymongo.MongoClient(CONNECTION_STRING)
 
 # Create database if it doesn't exist
@@ -50,6 +52,17 @@ if COLLECTION_NAME not in db.list_collection_names():
     print("Created collection '{}'.\n".format(COLLECTION_NAME))
 else:
     print("Using collection: '{}'.\n".format(COLLECTION_NAME))
+
+
+collection = db[COLLECTION_NAME_2]
+if COLLECTION_NAME not in db.list_collection_names():
+    # Creates a unsharded collection that uses the DBs shared throughput
+    db.command(
+        {"customAction": "CreateCollection", "collection": COLLECTION_NAME_2}
+    )
+    print("Created collection '{}'.\n".format(COLLECTION_NAME_2))
+else:
+    print("Using collection: '{}'.\n".format(COLLECTION_NAME_2))
 
 
 
@@ -140,7 +153,10 @@ class TestAppium(unittest.TestCase):
         collection.drop()
 
     def test_store_ai_messages(self) -> None:
-        collection.find({"unread" : 1})
+        docs = collection.find({"unread" : 1})
+        print(docs)
+        for doc in docs:
+            print(doc)
 
     def test_collection_find_by_name(self) -> None:
         doc = collection.find_one({"name":"LaShia"})
