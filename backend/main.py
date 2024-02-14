@@ -77,7 +77,7 @@ def get_all_users():
             "id": str(user["_id"]),
             "name": user["name"],
             "lastUpdated": user["lastUpdated"],
-            "lastMessage": user["messages"][-1]["message"] if len(user["messages"]) > 0 else "Start the chat with " + user["name"]
+            "lastMessage": user["lastMessageShownOnHinge"]
         }
         print(user)
         res.append(data)

@@ -5,6 +5,8 @@ from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 from datetime import datetime
 
+from selenium.webdriver.common.by import By
+
 capabilities = dict(
     platformName='Android',
     automationName='uiautomator2',
@@ -70,6 +72,22 @@ class TestAppium(unittest.TestCase):
         startx = size['width'] / 2
         self.driver.swipe(startx, starty, startx, endy)
 
+    def test_scroll_up_to_top(self) -> None:
+
+        while True:
+            try:
+                size = self.driver.get_window_size()
+                starty = (size['height'] * 0.50)
+                endy = (size['height'] * 0.80)
+                startx = size['width'] / 2
+                self.driver.swipe(startx, starty, startx, endy)
+                time.sleep(1)
+                el = self.driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/section_title')
+                sectionTitle = el.text
+                if sectionTitle[:9] == "Your turn":
+                    break
+            except:
+                continue
 
 
     def test_type_text(self) -> None:
@@ -118,8 +136,22 @@ class TestAppium(unittest.TestCase):
             self.driver.swipe(startx, starty, startx, endy)
             time.sleep(2)
 
-    def test_select_first_50_user_and_read_message(self) -> None:
-        totalNumberOfUsers = 50
+    def test_delete_collection(self) -> None:
+        collection.drop()
+
+    def test_collection_find_by_name(self) -> None:
+        doc = collection.find_one({"name":"LaShia"})
+
+
+        # Start
+        # the
+        # chat
+        # with LaShia
+
+        collection.update_one(doc, {"$set":{"lastMessageShownOnHinge":"Star the chat with LaShia"}})
+
+    def test_select_first_10_user_and_read_message(self) -> None:
+        totalNumberOfUsers = 10
         currentUserCount = 1
         allGirls = []
 
