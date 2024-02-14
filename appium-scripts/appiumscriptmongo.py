@@ -139,14 +139,11 @@ class TestAppium(unittest.TestCase):
     def test_delete_collection(self) -> None:
         collection.drop()
 
+    def test_store_ai_messages(self) -> None:
+        collection.find({"unread" : 1})
+
     def test_collection_find_by_name(self) -> None:
         doc = collection.find_one({"name":"LaShia"})
-
-
-        # Start
-        # the
-        # chat
-        # with LaShia
 
         collection.update_one(doc, {"$set":{"lastMessageShownOnHinge":"Star the chat with LaShia"}})
 

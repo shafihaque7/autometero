@@ -120,10 +120,15 @@ def read_messages(driver, lastMessageShownOnHinge, doc) -> None:
         messagesSorted.append(data)
         order+=1
 
+    unread = 0
+    if len(messagesSorted) > 0 and messagesSorted[-1]["user"] != "You":
+        unread = 1
+
     user = {
         "name": nameOfThePerson,
         "lastMessageShownOnHinge": lastMessageShownOnHinge,
         "lastUpdated": datetime.now(),
+        "unread": unread,
         "messages": messagesSorted
     }
     if doc is None:
