@@ -213,6 +213,7 @@ if __name__ == "__main__":
         driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
         scroll_up_to_top(driver)
         test_select_first_10_user_and_read_message(driver)
+        scroll_up_to_top(driver)
         time.sleep(600)
 
     # Delete everything from database
