@@ -32,6 +32,8 @@ docker ps -a
 
 #Start the container
 docker container start androidemu
+docker container stop androidemu
+docker container restart androidemu
 
 #Running process in the background
 https://askubuntu.com/questions/8653/how-to-keep-processes-running-after-ending-ssh-session

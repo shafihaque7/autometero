@@ -78,7 +78,7 @@ def read_messages(driver, lastMessageShownOnHinge, doc) -> None:
 
     size = driver.get_window_size()
 
-    while not driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/liked_answer') and not self.driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/liked_photo'):
+    while not driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/liked_answer') and not driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/liked_photo'):
 
         elements = driver.find_elements(by=AppiumBy.XPATH,
                                              value="//android.widget.TextView[@resource-id='co.hinge.app:id/chatBubble']")
