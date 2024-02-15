@@ -479,7 +479,8 @@ allUsers.forEach(function(user: any){
 
 })
 
-const allNotificationsResponse = await axios.get("http://127.0.0.1:8080/ai/notifications")
+// const allNotificationsResponse = await axios.get("http://127.0.0.1:8080/ai/notifications")
+const allNotificationsResponse = await axios.get("http://104.42.212.81:8080/ai/notifications")
 const allNotifications = allNotificationsResponse.data
 allNotifications.forEach(function(user: any){
   const notificationData : INotification = {

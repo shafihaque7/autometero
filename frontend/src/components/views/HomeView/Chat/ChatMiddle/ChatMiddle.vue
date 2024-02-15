@@ -56,8 +56,8 @@ const loadAIData = async () => {
   if (conversationObjectId !== undefined) {
     console.log("conversation object id is", conversationObjectId)
 
-    // const axiosData = await axios.get("http://104.42.212.81:8080/ai/user/" + conversationObjectId)
-    const axiosData = await axios.get("http://127.0.0.1:8080/ai/user/" + conversationObjectId)
+    const axiosData = await axios.get("http://104.42.212.81:8080/ai/user/" + conversationObjectId)
+    // const axiosData = await axios.get("http://127.0.0.1:8080/ai/user/" + conversationObjectId)
     // console.log(axiosData.data)
 
 
