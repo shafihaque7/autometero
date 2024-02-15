@@ -1,6 +1,6 @@
 import json
 
-from bson import ObjectId
+from bson.objectid import ObjectId
 from flask import Flask, request
 import pymongo
 from appium import webdriver
@@ -55,6 +55,18 @@ if COLLECTION_NAME not in db.list_collection_names():
 else:
     print("Using collection: '{}'.\n".format(COLLECTION_NAME))
 
+COLLECTION_NAME_2 = "automatedMessages"
+automatedMessagesCollection = db[COLLECTION_NAME_2]
+if COLLECTION_NAME_2 not in db.list_collection_names():
+    # Creates a unsharded collection that uses the DBs shared throughput
+    db.command(
+        {"customAction": "CreateCollection", "collection": COLLECTION_NAME_2}
+    )
+    print("Created collection '{}'.\n".format(COLLECTION_NAME_2))
+else:
+    print("Using collection: '{}'.\n".format(COLLECTION_NAME_2))
+
+
 # End of database connection
 # Appium integration
 
@@ -97,25 +109,47 @@ def get_user(user_id):
 
 @app.route("/ai/user/<user_id>")
 def get_ai_suggested_messages(user_id):
-    user = collection.find_one({"_id": ObjectId(user_id)})
 
-    messages = user["messages"]
+    # user = collection.find_one({"_id": ObjectId(user_id)})
+    #
+    # messages = user["messages"]
+    #
+    # messageString = ""
+    # for m in messages:
+    #     messageString += m["user"] + ": " + m["message"] + "\n"
+    #
+    #
+    # requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me 3 example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
+    # request = requestToFormat.format(name=user["name"], messageString = messageString)
+    #
+    #
+    # result = chat_model.predict(request)
+    # print("result: ", str(result))
+    #
+    # return json.loads(result)
+    print("called ai storage retrieval")
+    print(user_id)
+    user = automatedMessagesCollection.find_one({"_id" : ObjectId(user_id)})
+    data = {
+        "_id": str(user["_id"]),
+        "name" : user["name"],
+        "aiMessages" : user["aiMessages"],
+        "aiMessageToSend" : user["aiMessageToSend"]
+    }
+    return data
 
-    messageString = ""
-    for m in messages:
-        messageString += m["user"] + ": " + m["message"] + "\n"
-
-
-    requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me 3 example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
-    request = requestToFormat.format(name=user["name"], messageString = messageString)
-
-
-    result = chat_model.predict(request)
-    print("result: ", str(result))
-
-
-
-    return json.loads(result)
+@app.route("/ai/notifications")
+def get_ai_notifications():
+    users = automatedMessagesCollection.find()
+    res = []
+    for user in users:
+        data = {
+            "_id" : str(user["_id"]),
+            "name" : user["name"],
+            "aiMessageToSend" : user["aiMessageToSend"]
+        }
+        res.append(data)
+    return res
 
 @app.route("/appium/sendtext", methods=['POST'])
 def send_text():

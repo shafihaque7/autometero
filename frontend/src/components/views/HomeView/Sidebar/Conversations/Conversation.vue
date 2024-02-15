@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { IAttachment, IConversation, IMessage, IRecording } from "@src/types";
 import type { Ref } from "vue";
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import axios from "axios"
 
 import {
@@ -71,6 +71,7 @@ const handleSelectConversation = async () => {
     console.log("The conversation id is: ", props.conversation.id)
 
     const conversationIndex = getConversationIndex(props.conversation.id)
+    console.log("The conversation index for convo is", conversationIndex)
     // store.conversations[conversationIndex].messages = []
     if (conversationIndex !== undefined) {
       const currentConversation = store.conversations[conversationIndex];
@@ -100,7 +101,6 @@ const handleSelectConversation = async () => {
           }
 
         }
-        // store.conversations[conversationIndex].messages.push(someData);
         allMessages.push(someData)
 
       })
@@ -109,6 +109,7 @@ const handleSelectConversation = async () => {
     }
 
     props.handleConversationChange(props.conversation.id);
+    console.log("The active conv is", store.activeConversationId)
 
 
 
@@ -127,6 +128,9 @@ const handleRemoveUnread = () => {
     store.conversations[index].unread = 0;
   }
 };
+
+
+
 </script>
 
 <template>

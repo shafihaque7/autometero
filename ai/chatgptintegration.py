@@ -1,4 +1,4 @@
-from openai import OpenAI
+from openaiinternal import OpenAI
 client = OpenAI()
 
 completion = client.chat.completions.create(

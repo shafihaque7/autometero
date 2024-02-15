@@ -219,7 +219,7 @@ if __name__ == "__main__":
         scroll_up_to_top(driver)
         test_select_first_10_user_and_read_message(driver)
         scroll_up_to_top(driver)
-        driver.quit()
+        # driver.quit()
         time.sleep(600)
 
     # Delete everything from database

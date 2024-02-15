@@ -78,6 +78,7 @@ export interface IContactGroup {
 }
 
 export interface INotification {
+  objectId: string;
   flag: string;
   title: string;
   message: string;

@@ -4,6 +4,8 @@ from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 from datetime import datetime
+import openaiinternal
+from bson.objectid import ObjectId
 
 from selenium.webdriver.common.by import By
 
@@ -54,8 +56,8 @@ else:
     print("Using collection: '{}'.\n".format(COLLECTION_NAME))
 
 
-collection = db[COLLECTION_NAME_2]
-if COLLECTION_NAME not in db.list_collection_names():
+automatedMessagesCollection = db[COLLECTION_NAME_2]
+if COLLECTION_NAME_2 not in db.list_collection_names():
     # Creates a unsharded collection that uses the DBs shared throughput
     db.command(
         {"customAction": "CreateCollection", "collection": COLLECTION_NAME_2}
@@ -153,10 +155,31 @@ class TestAppium(unittest.TestCase):
         collection.drop()
 
     def test_store_ai_messages(self) -> None:
-        docs = collection.find({"unread" : 1})
-        print(docs)
-        for doc in docs:
-            print(doc)
+        users = collection.find({"unread" : 1})
+        print(users)
+        for user in users:
+            res = openaiinternal.chatgptcall(user)
+            # print(res)
+            # time.sleep(1)
+            print(user)
+
+            userData = {
+                "_id" : user["_id"],
+                "name": user["name"],
+                "aiMessages" : res,
+                "aiMessageToSend" : res[0] if len(res) > 0 else None
+            }
+
+            automatedMessagesCollection.insert_one(userData)
+            time.sleep(2)
+
+    def test_get_ai_message_from_db(self) -> None:
+        user = automatedMessagesCollection.find_one({"_id" : ObjectId("65cd2a53339e0220b0373fa3")})
+        print(user)
+
+
+
+
 
     def test_collection_find_by_name(self) -> None:
         doc = collection.find_one({"name":"LaShia"})

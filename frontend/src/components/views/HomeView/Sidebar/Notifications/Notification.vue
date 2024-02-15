@@ -1,16 +1,64 @@
 <script setup lang="ts">
-import type { INotification } from "@src/types";
-
+import type { IMessage, INotification } from "@src/types";
+import axios from "axios"
 import Typography from "@src/components/ui/data-display/Typography.vue";
 import {
   ArrowPathIcon,
   LockClosedIcon,
   PlusCircleIcon,
 } from "@heroicons/vue/24/outline";
+import useStore from "@src/store/store";
+import { getConversationIdFromObjectId, getConversationIndex } from "@src/utils";
 
 const props = defineProps<{
   notification: INotification;
 }>();
+
+const store = useStore();
+
+const changeSelectedConversation = async () => {
+  console.log("fsdfds",props.notification.objectId)
+  const conversationId = getConversationIdFromObjectId(props.notification.objectId)
+  const conversationIndex = getConversationIndex(conversationId)
+
+      const axiosData = await axios.get("http://104.42.212.81:8080/user/" + props.notification.objectId)
+      const serverMessages = axiosData.data["messages"]
+      console.log(serverMessages)
+      const allMessages: IMessage[] = []
+      serverMessages.forEach(function(msg: any) {
+        let idCounter = 3
+
+        const someData = {
+          id: idCounter++,
+          content:
+            msg["message"],
+          date: "5:00 pm",
+          state: "read",
+          sender: {
+            id: (msg["user"] == "You") ? 1 : 45454,
+            firstName: "Dawn",
+            lastName: "Sabrina",
+            lastSeen: new Date(),
+            email: "sabrina@gmail.com",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+          }
+
+        }
+
+        allMessages.push(someData)
+
+      })
+      console.log("allmesgsgsg froms message", allMessages)
+      store.conversations[conversationIndex].messages = allMessages
+
+
+
+  // Figure this shit out it doesn't make sense
+  store.activeConversationId = conversationId + 1;
+  store.conversationOpen = "open";
+  // props.handleConversationChange(3);
+}
 </script>
 
 <template>
@@ -47,7 +95,8 @@ const props = defineProps<{
     </div>
 
     <!--notification content-->
-    <div class="grow">
+
+    <div class="grow" @click="changeSelectedConversation">
       <Typography variant="heading-2" class="mb-4">
         {{ props.notification.title }}
       </Typography>

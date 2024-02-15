@@ -2,7 +2,7 @@ import { doc, getDoc, getDocs, collection, query, addDoc, orderBy } from "fireba
 // the firestore instance
 import db from '../firebaseInit'
 import axios from "axios"
-import { IConversation } from "@src/types";
+import { IConversation, INotification } from "@src/types";
 
 export const defaultSettings = [
   {
@@ -118,38 +118,40 @@ export const conversations : IConversation[]= [];
 
 export const archive = [];
 
-export const notifications = [
-  {
-    flag: "added-to-group",
-    title: "Message being sent to Laura",
-    message: "What's your favorite food in sac?"
-  },
-  {
-    flag: "security",
-    title: "Recent Login",
-    message: "there was a recent login to you account from this device",
-  },
-  {
-    flag: "added-to-group",
-    title: "New Group",
-    message: "Your friend added you to a new group",
-  },
-  {
-    flag: "account-update",
-    title: "Password Reset",
-    message: "Your password has been restored successfully",
-  },
-  {
-    flag: "security",
-    title: "Recent Login",
-    message: "there was a recent login to you account from this device",
-  },
-  {
-    flag: "added-to-group",
-    title: "New Group",
-    message: "Your friend added you to a new group",
-  },
-];
+export const notifications : INotification[] = []
+
+// export const notifications = [
+//   {
+//     flag: "added-to-group",
+//     title: "Message being sent to Laura",
+//     message: "What's your favorite food in sac?"
+//   },
+//   {
+//     flag: "security",
+//     title: "Recent Login",
+//     message: "there was a recent login to you account from this device",
+//   },
+//   {
+//     flag: "added-to-group",
+//     title: "New Group",
+//     message: "Your friend added you to a new group",
+//   },
+//   {
+//     flag: "account-update",
+//     title: "Password Reset",
+//     message: "Your password has been restored successfully",
+//   },
+//   {
+//     flag: "security",
+//     title: "Recent Login",
+//     message: "there was a recent login to you account from this device",
+//   },
+//   {
+//     flag: "added-to-group",
+//     title: "New Group",
+//     message: "Your friend added you to a new group",
+//   },
+// ];
 
 export const calls = [
   {
@@ -429,7 +431,7 @@ let idNumber = 1
 let contactsNumber :number = 11
 allUsers.forEach(function(user: any){
   const userData: IConversation = {
-    id: idNumber +=1,
+    id: idNumber,
     objectId: user["id"],
     type: "couple",
     draftMessage: "",
@@ -472,40 +474,24 @@ allUsers.forEach(function(user: any){
     },
   ]
   }
+  idNumber+=1
   conversations.push(userData)
-
-
 
 })
 
+const allNotificationsResponse = await axios.get("http://127.0.0.1:8080/ai/notifications")
+const allNotifications = allNotificationsResponse.data
+allNotifications.forEach(function(user: any){
+  const notificationData : INotification = {
+    objectId: user["_id"],
+    flag: "added-to-group",
+    title: "Message being sent to " + user["name"] + " in 2 hours!",
+    message: user["aiMessageToSend"]
+  }
+  notifications.push(notificationData)
+})
 
 
-
-
-// const axiosData = await axios.get("http://127.0.0.1:5000/user/65b97b812d5ee8a9173907ec")
-// const serverMessages = axiosData.data["messages"]
-// serverMessages.forEach(function(msg){
-//   let idCounter = 3
-//
-//   const someData = {
-//     id: idCounter++,
-//     content:
-//     msg["message"],
-//     date: "5:00 pm",
-//     state: "read",
-//     sender: {
-//       id: 1,
-//       firstName: "Dawn",
-//       lastName: "Sabrina",
-//       lastSeen: new Date(),
-//       email: "sabrina@gmail.com",
-//       avatar:
-//         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
-//     }
-//
-//   }
-//   conversations[3].messages.push(someData);
-// })
 
 
 export default {

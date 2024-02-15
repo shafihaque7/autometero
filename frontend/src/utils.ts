@@ -125,6 +125,21 @@ export const getConversationIndex = (
   return conversationIndex;
 };
 
+export const getConversationIdFromObjectId = (
+  objectId: string
+): number | undefined => {
+  let conversationId;
+  const store = useStore();
+
+  store.conversations.forEach((conversation, id) => {
+    if (conversation.objectId === objectId) {
+      conversationId = id;
+    }
+  });
+
+  return conversationId;
+};
+
 export const getConversationObjectId = (
   conversationId: number) : string | undefined => {
   let conversationObjectId;

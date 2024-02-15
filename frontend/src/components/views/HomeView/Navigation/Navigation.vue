@@ -74,7 +74,7 @@ const handleActiveSidebarComponentChange = (value: string) => {
             <NavLink
               :icon="BellIcon"
               title="Notifications"
-              :notifications="3"
+              :notifications="6"
               @click="() => handleActiveSidebarComponentChange('notifications')"
               :active="store.activeSidebarComponent === 'notifications'"
             />
