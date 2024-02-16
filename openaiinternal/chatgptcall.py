@@ -11,6 +11,7 @@ def chatgptcall(user):
 
     requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me 3 example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
     request = requestToFormat.format(name=user["name"], messageString=messageString)
+    print(request)
 
     result = chat_model.predict(request)
     return json.loads(result)

@@ -173,6 +173,13 @@ class TestAppium(unittest.TestCase):
             automatedMessagesCollection.insert_one(userData)
             time.sleep(2)
 
+    def test_alanis_open_req(self) -> None:
+        user = collection.find_one({"_id" : ObjectId("65cd2a83339e0220b0373fa7")})
+
+        res = openaiinternal.chatgptcall(user)
+        # print(user)
+
+
     def test_get_ai_message_from_db(self) -> None:
         user = automatedMessagesCollection.find_one({"_id" : ObjectId("65cd2a53339e0220b0373fa3")})
         print(user)
