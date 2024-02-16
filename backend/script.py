@@ -213,6 +213,8 @@ def test_select_first_10_user_and_read_message(driver) -> None:
         driver.swipe(startx, starty, startx, endy)
         time.sleep(2)
 
+
+
 if __name__ == "__main__":
     while True:
         driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
