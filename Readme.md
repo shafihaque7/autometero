@@ -4,6 +4,11 @@ ssh azureuser@104.42.212.81
 # To ssh tunnel the vm to locally
 ssh -L 5555:127.0.0.1:5555 azureuser@104.42.212.81
 
+# If connection to emulator not working, do these
+docker container restart androidemu
+adb connect 127.0.0.1:5555 # on the arm vm
+appium # on the armvm
+
 # To ssh tunnel just the appium server (This shouldn't be needed as the port 4723 is already exposed from azure)
 ssh -L 4723:127.0.0.1:4723 azureuser@104.42.212.81
 
