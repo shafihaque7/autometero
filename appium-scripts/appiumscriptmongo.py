@@ -108,7 +108,9 @@ class TestAppium(unittest.TestCase):
     def test_type_text(self) -> None:
 
         textbox = self.driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="co.hinge.app:id/messageComposition"]')
-        textbox.send_keys("That's a handsome dude")
+        textbox.send_keys("my guess would be cereal, maybe cinnamon toast crunch")
+        el = self.driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/sendMessageButton')
+        el.click()
 
     def test_select_user_based_on_name_and_last_message(self) -> None:
         nameToSearch = "Alanis"
@@ -183,10 +185,6 @@ class TestAppium(unittest.TestCase):
     def test_get_ai_message_from_db(self) -> None:
         user = automatedMessagesCollection.find_one({"_id" : ObjectId("65cd2a53339e0220b0373fa3")})
         print(user)
-
-
-
-
 
     def test_collection_find_by_name(self) -> None:
         doc = collection.find_one({"name":"LaShia"})

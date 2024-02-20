@@ -169,6 +169,8 @@ def type_text(text) -> None:
 
     textbox = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="co.hinge.app:id/messageComposition"]')
     textbox.send_keys(text)
+    el = driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/sendMessageButton')
+    el.click()
 
 def select_user_based_on_name_and_last_message(nameToSearch, lastMessageToSearch, messageToSend):
 
