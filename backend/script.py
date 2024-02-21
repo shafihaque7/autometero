@@ -218,7 +218,7 @@ def test_select_first_10_user_and_read_message(driver) -> None:
 if __name__ == "__main__":
     while True:
         driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
-        # scroll_up_to_top(driver)
+        scroll_up_to_top(driver)
         test_select_first_10_user_and_read_message(driver)
         scroll_up_to_top(driver)
         # driver.quit()

@@ -176,10 +176,10 @@ class TestAppium(unittest.TestCase):
             time.sleep(2)
 
     def test_alanis_open_req(self) -> None:
-        user = collection.find_one({"_id" : ObjectId("65cd2a83339e0220b0373fa7")})
+        user = collection.find_one({"_id" : ObjectId("65d168b8e5e69003db90d73a")})
 
         res = openaiinternal.chatgptcall(user)
-        # print(user)
+        print(res)
 
 
     def test_get_ai_message_from_db(self) -> None:
