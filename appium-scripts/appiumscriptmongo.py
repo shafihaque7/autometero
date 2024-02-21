@@ -157,7 +157,8 @@ class TestAppium(unittest.TestCase):
         collection.drop()
 
     def test_store_ai_messages(self) -> None:
-        users = collection.find({"unread" : 1})
+        # users = collection.find({"unread" : 1})
+        users = collection.find()
         print(users)
         for user in users:
             res = openaiinternal.chatgptcall(user)
