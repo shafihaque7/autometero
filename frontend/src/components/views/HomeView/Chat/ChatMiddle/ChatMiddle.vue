@@ -60,8 +60,34 @@ const loadAIData = async () => {
     // const axiosData = await axios.get("http://127.0.0.1:8080/ai/user/" + conversationObjectId)
     // console.log(axiosData.data)
 
+    const allAiMessages: IMessage[] = []
 
-    aiMessages.value = axiosData.data["aiMessages"]
+    const dataAiMessages = axiosData.data["aiMessages"]
+
+    let idNumberiMessage = 20
+
+    dataAiMessages.forEach(function(aiMsg: string){
+      const aiImessage: IMessage = {
+        id: idNumberiMessage,
+        content: aiMsg,
+        date: "",
+        state: "read",
+        sender: {
+          id: 1,
+          firstName: "Dawn",
+          lastName: "Sabrina",
+          lastSeen: new Date(),
+          email: "sabrina@gmail.com",
+          avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        }
+      }
+      allAiMessages.push(aiImessage)
+    })
+
+    // aiMessages.value = axiosData.data["aiMessages"]
+    aiMessages.value = allAiMessages
+
+
 
     activeConversation.draftMessage = axiosData.data["aiMessageToSend"]
 
@@ -110,6 +136,7 @@ onMounted(() => {
       />
     </div>
 
+    <div class="w-full my-7 flex items-center justify-center">
       <div
         class="w-full h-0 border-t border-dashed dark:border-gray-600 dark:bg-opacity-0"
       ></div>
@@ -123,14 +150,29 @@ onMounted(() => {
 
 
     <div v-for="aimsg in aiMessages">
-     <div class="xs:mb-6 md:mb-5 flex justify-end">
+      <Message
+        :message="aimsg"
+        :self="true"
+        :follow-up="true"
+        :divider="true"
+        :selected="true"
+        :handle-select-message="handleSelectMessage"
+        :handle-deselect-message="handleDeselectMessage"
+      />
 
 
-      <button @click="changeDraftMessage(aimsg)" class="block p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-700 lg:mb-0">
-         <p class="font-normal text-gray-700 dark:text-gray-400">{{ aimsg}}</p>
-       </button>
 
-    </div>
+<!--     <div class="xs:mb-6 md:mb-5 flex justify-end">-->
+
+
+<!--      <button @click="changeDraftMessage(aimsg)" class="block p-6 mb-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:hover:bg-gray-700 hover:bg-gray-100 dark:border-gray-700 lg:mb-0">-->
+<!--         <p class="font-normal text-gray-700 dark:text-gray-400">{{ aimsg}}</p>-->
+<!--       </button>-->
+
+<!--    </div>-->
+
+     </div>
+
 
 
 
