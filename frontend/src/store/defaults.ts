@@ -486,7 +486,7 @@ allNotifications.forEach(function(user: any){
   const notificationData : INotification = {
     objectId: user["_id"],
     flag: "added-to-group",
-    title: "Message being sent to " + user["name"] + " in 2 hours!",
+    title: "Message being sent to " + user["name"] + " in 1.5 hours!",
     message: user["aiMessageToSend"]
   }
   notifications.push(notificationData)
