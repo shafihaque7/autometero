@@ -180,6 +180,9 @@ def send_text():
     lastMessageShownOnHinge = user["lastMessageShownOnHinge"]
     print(lastMessageShownOnHinge)
     select_user_based_on_name_and_last_message(name, lastMessageShownOnHinge, data.get("messageToSend"))
+    el = driver.find_element(by=AppiumBy.XPATH,
+                             value='//android.widget.ImageView[@content-desc="Back to Matches"]')
+    el.click()
 
     return data
 

@@ -92,7 +92,7 @@ class TestAppium(unittest.TestCase):
         print(dt_string)
 
     def test_store_timestamp_in_collection(self):
-        dt_string = datetime.now().strftime("%m/%d/%Y %H:%M:%S %p")
+        dt_string = datetime.now().strftime("%m/%d/%Y %I:%M:%S %p")
         utilsCollection.delete_many({})
         lastUpdatedTime = {"lastUpdatedTimeForScraper": dt_string}
         utilsCollection.insert_one(lastUpdatedTime)
@@ -184,6 +184,7 @@ class TestAppium(unittest.TestCase):
         users = collection.find()
         print(users)
         for user in users:
+            automatedMessagesCollection.delete_many({"_id": ObjectId(user["_id"])})
             res = openaiinternal.chatgptcall(user)
             # print(res)
             # time.sleep(1)

@@ -2,6 +2,8 @@ import pymongo
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 import time
+import openaiinternal
+from bson.objectid import ObjectId
 from datetime import datetime
 
 
@@ -37,6 +39,28 @@ if COLLECTION_NAME not in db.list_collection_names():
 else:
     print("Using collection: '{}'.\n".format(COLLECTION_NAME))
 
+COLLECTION_NAME_2 = "automatedMessages"
+
+automatedMessagesCollection = db[COLLECTION_NAME_2]
+if COLLECTION_NAME_2 not in db.list_collection_names():
+    # Creates a unsharded collection that uses the DBs shared throughput
+    db.command(
+        {"customAction": "CreateCollection", "collection": COLLECTION_NAME_2}
+    )
+    print("Created collection '{}'.\n".format(COLLECTION_NAME_2))
+else:
+    print("Using collection: '{}'.\n".format(COLLECTION_NAME_2))
+
+COLLECTION_NAME_3 = "utils"
+utilsCollection = db[COLLECTION_NAME_3]
+if COLLECTION_NAME_3 not in db.list_collection_names():
+    db.command(
+        {"customAction": "CreateCollection", "collection": COLLECTION_NAME_3}
+    )
+    print("Created collection '{}'.\n".format(COLLECTION_NAME_3))
+else:
+    print("Using collection: '{}'.\n".format(COLLECTION_NAME_3))
+
 # End of database connection
 # Appium integration
 
@@ -48,6 +72,13 @@ capabilities = dict(
     locale='US'
 )
 appium_server_url = 'http://104.42.212.81:4723'
+
+
+def store_timestamp():
+    dt_string = datetime.now().strftime("%m/%d/%Y %I:%M:%S %p")
+    utilsCollection.delete_many({})
+    lastUpdatedTime = {"lastUpdatedTimeForScraper": dt_string}
+    utilsCollection.insert_one(lastUpdatedTime)
 
 
 def scroll_up_to_top(driver) -> None:
@@ -138,7 +169,8 @@ def read_messages(driver, lastMessageShownOnHinge, doc) -> None:
     else:
         collection.update_one(doc, {"$set": user})
 
-def test_select_first_10_user_and_read_message(driver) -> None:
+def test_select_first_10_user_and_read_message(driver) -> bool:
+    shouldRunAI = False
     totalNumberOfUsers = 10
     currentUserCount = 1
     allGirls = []
@@ -191,6 +223,7 @@ def test_select_first_10_user_and_read_message(driver) -> None:
                     el.click()
                     time.sleep(1)
                     read_messages(driver, lastMessageText, None)
+                    shouldRunAI = True
 
                 else:
                     if doc["lastMessageShownOnHinge"] == lastMessageText:
@@ -200,6 +233,7 @@ def test_select_first_10_user_and_read_message(driver) -> None:
                         el.click()
                         time.sleep(1)
                         read_messages(driver, lastMessageText, doc)
+                        shouldRunAI = True
 
 
                 el = driver.find_element(by=AppiumBy.XPATH,
@@ -214,16 +248,48 @@ def test_select_first_10_user_and_read_message(driver) -> None:
         startx = size['width'] / 2
         driver.swipe(startx, starty, startx, endy)
         time.sleep(2)
+        return shouldRunAI
+
+def store_ai_messages() -> None:
+    # users = collection.find({"unread" : 1})
+    users = collection.find()
+    print(users)
+    for user in users:
+        automatedMessagesCollection.delete_many({"_id": ObjectId(user["_id"])})
+        res = openaiinternal.chatgptcall(user)
+        # print(res)
+        # time.sleep(1)
+        print(user)
+
+        userData = {
+            "_id" : user["_id"],
+            "name": user["name"],
+            "aiMessages" : res,
+            "aiMessageToSend" : res[0] if len(res) > 0 else None
+        }
+
+        automatedMessagesCollection.insert_one(userData)
+        time.sleep(2)
 
 
 
 if __name__ == "__main__":
+    totalNumberOfTimesRam = 0
     while True:
         driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
         scroll_up_to_top(driver)
-        test_select_first_10_user_and_read_message(driver)
+        shouldRunAI = test_select_first_10_user_and_read_message(driver)
         scroll_up_to_top(driver)
-        # driver.quit()
+        totalNumberOfTimesRam +=1
+        print("Total number of times the autoscraper ran: ",totalNumberOfTimesRam)
+        driver.quit()
+        if shouldRunAI:
+            try:
+                store_ai_messages()
+            except:
+                print("AI failed")
+
+        store_timestamp()
         time.sleep(600)
 
     # Delete everything from database

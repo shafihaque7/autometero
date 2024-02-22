@@ -10,6 +10,10 @@ import Typography from "@src/components/ui/data-display/Typography.vue";
       <slot name="title"></slot>
     </Typography>
 
+    <Typography variant="body-5" tabindex="0" class="outline-none">
+      <slot name="lastUpdated"></slot>
+    </Typography>
+
     <div>
       <slot name="actions"></slot>
     </div>

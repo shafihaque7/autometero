@@ -16,6 +16,7 @@ import FadeTransition from "@src/components/ui/transitions/FadeTransition.vue";
 import ArchivedButton from "@src/components/views/HomeView/Sidebar/Conversations/ArchivedButton.vue";
 import ConversationsList from "@src/components/views/HomeView/Sidebar/Conversations/ConversationsList.vue";
 import SidebarHeader from "@src/components/views/HomeView/Sidebar/SidebarHeader.vue";
+import axios from "axios";
 
 const store = useStore();
 
@@ -63,6 +64,14 @@ const closeComposeModal = () => {
   composeOpen.value = false;
 };
 
+const lastUpdatedDateAndTime = ref("")
+
+const loadLastUpdated = async () => {
+  const axiosData = await axios.get("http://104.42.212.81:8080/getLastUpdated")
+  // console.log(axiosData.data)
+  lastUpdatedDateAndTime.value = axiosData.data["lastUpdatedTimeForScraper"]
+}
+
 // if the active conversation is in the archive
 // then open the archive
 onMounted(() => {
@@ -71,6 +80,7 @@ onMounted(() => {
   );
 
   if (conversation) openArchive.value = true;
+  loadLastUpdated()
 });
 </script>
 
@@ -78,7 +88,7 @@ onMounted(() => {
   <div>
     <SidebarHeader>
       <!--title-->
-      <template v-slot:title>Messages</template>
+      <template v-slot:lastUpdated>Last Updated : {{ lastUpdatedDateAndTime }}</template>
 
       <!--side actions-->
       <template v-slot:actions>
