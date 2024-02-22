@@ -66,6 +66,16 @@ if COLLECTION_NAME_2 not in db.list_collection_names():
 else:
     print("Using collection: '{}'.\n".format(COLLECTION_NAME_2))
 
+COLLECTION_NAME_3 = "utils"
+utilsCollection = db[COLLECTION_NAME_3]
+if COLLECTION_NAME_3 not in db.list_collection_names():
+    db.command(
+        {"customAction": "CreateCollection", "collection": COLLECTION_NAME_3}
+    )
+    print("Created collection '{}'.\n".format(COLLECTION_NAME_3))
+else:
+    print("Using collection: '{}'.\n".format(COLLECTION_NAME_3))
+
 
 # End of database connection
 # Appium integration
@@ -106,6 +116,14 @@ def get_user(user_id):
         "messages": user["messages"]
     }
     return data
+
+@app.route("/getLastUpdated")
+def get_last_updated():
+    docs = utilsCollection.find()
+    data = {"lastUpdatedTimeForScraper" : docs[0]["lastUpdatedTimeForScraper"]}
+    return data
+
+
 
 @app.route("/ai/user/<user_id>")
 def get_ai_suggested_messages(user_id):

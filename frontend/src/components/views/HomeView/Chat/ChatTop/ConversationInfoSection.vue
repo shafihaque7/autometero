@@ -118,7 +118,7 @@ const handleOpenVoiceCallModal = () => {
           tabindex="0"
           aria-label="Last seen december 16, 2019"
         >
-          Last seen Dec 16, 2019
+          Last seen Feb 22, 2024
         </Typography>
       </div>
     </div>

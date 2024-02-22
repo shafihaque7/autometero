@@ -6,6 +6,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from datetime import datetime
 import openaiinternal
 from bson.objectid import ObjectId
+from datetime import datetime
 
 from selenium.webdriver.common.by import By
 
@@ -29,7 +30,6 @@ CONNECTION_STRING = "mongodb://hingeautomation:ti00pSXB7n8NGKPpDHPU0yjtrelS8N99z
 DB_NAME = "hingeautomation"
 COLLECTION_NAME = "users"
 
-COLLECTION_NAME_2 = "automatedMessages"
 
 client = pymongo.MongoClient(CONNECTION_STRING)
 
@@ -55,6 +55,7 @@ if COLLECTION_NAME not in db.list_collection_names():
 else:
     print("Using collection: '{}'.\n".format(COLLECTION_NAME))
 
+COLLECTION_NAME_2 = "automatedMessages"
 
 automatedMessagesCollection = db[COLLECTION_NAME_2]
 if COLLECTION_NAME_2 not in db.list_collection_names():
@@ -66,8 +67,15 @@ if COLLECTION_NAME_2 not in db.list_collection_names():
 else:
     print("Using collection: '{}'.\n".format(COLLECTION_NAME_2))
 
-
-
+COLLECTION_NAME_3 = "utils"
+utilsCollection = db[COLLECTION_NAME_3]
+if COLLECTION_NAME_3 not in db.list_collection_names():
+    db.command(
+        {"customAction": "CreateCollection", "collection": COLLECTION_NAME_3}
+    )
+    print("Created collection '{}'.\n".format(COLLECTION_NAME_3))
+else:
+    print("Using collection: '{}'.\n".format(COLLECTION_NAME_3))
 
 
 
@@ -79,6 +87,20 @@ class TestAppium(unittest.TestCase):
         if self.driver:
             self.driver.quit()
 
+    def test_store_timestamp_in_db(self):
+        dt_string = datetime.now().strftime("%m/%d/%Y %H:%M:%S %p")
+        print(dt_string)
+
+    def test_store_timestamp_in_collection(self):
+        dt_string = datetime.now().strftime("%m/%d/%Y %H:%M:%S %p")
+        utilsCollection.delete_many({})
+        lastUpdatedTime = {"lastUpdatedTimeForScraper": dt_string}
+        utilsCollection.insert_one(lastUpdatedTime)
+
+    def test_get_last_updated_time(self):
+        docs = utilsCollection.find()
+        print(docs[0]["lastUpdatedTimeForScraper"])
+
 
     def test_get_all_elements(self) -> None:
         size = self.driver.get_window_size()
@@ -88,15 +110,16 @@ class TestAppium(unittest.TestCase):
         self.driver.swipe(startx, starty, startx, endy)
 
     def test_scroll_up_to_top(self) -> None:
-
-        while True:
+        # Scroll up for up to 30 seconds
+        t_end = time.time() + 30
+        while time.time() < t_end:
             try:
                 size = self.driver.get_window_size()
                 starty = (size['height'] * 0.50)
                 endy = (size['height'] * 0.80)
                 startx = size['width'] / 2
                 self.driver.swipe(startx, starty, startx, endy)
-                time.sleep(1)
+                # time.sleep(1)
                 el = self.driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/section_title')
                 sectionTitle = el.text
                 if sectionTitle[:9] == "Your turn":
@@ -154,7 +177,7 @@ class TestAppium(unittest.TestCase):
             time.sleep(2)
 
     def test_delete_collection(self) -> None:
-        collection.drop()
+        collection.delete_many({})
 
     def test_store_ai_messages(self) -> None:
         # users = collection.find({"unread" : 1})
