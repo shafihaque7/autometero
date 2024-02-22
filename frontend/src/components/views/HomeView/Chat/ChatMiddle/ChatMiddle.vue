@@ -95,8 +95,8 @@ const loadAIData = async () => {
   }
 }
 
-const changeDraftMessage = (aimsg:string) => {
-  activeConversation.draftMessage = aimsg
+const changeDraftMessage = (aimsg:IMessage) => {
+  activeConversation.draftMessage = aimsg.content
   // console.log(aimsg)
   console.log("active conversation, ",activeConversation)
 
@@ -151,6 +151,8 @@ onMounted(() => {
 
     <div v-for="aimsg in aiMessages">
       <Message
+        class="cursor-pointer"
+        @click="changeDraftMessage(aimsg)"
         :message="aimsg"
         :self="true"
         :follow-up="true"
@@ -159,6 +161,7 @@ onMounted(() => {
         :handle-select-message="handleSelectMessage"
         :handle-deselect-message="handleDeselectMessage"
       />
+
 
 
 
