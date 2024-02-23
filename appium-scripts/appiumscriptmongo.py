@@ -7,6 +7,7 @@ from datetime import datetime
 import openaiinternal
 from bson.objectid import ObjectId
 from datetime import datetime
+import sys
 
 from selenium.webdriver.common.by import By
 
@@ -86,6 +87,9 @@ class TestAppium(unittest.TestCase):
     def tearDown(self) -> None:
         if self.driver:
             self.driver.quit()
+
+    def test_working_directory(self):
+        print(sys.path[0])
 
     def test_store_timestamp_in_db(self):
         dt_string = datetime.now().strftime("%m/%d/%Y %H:%M:%S %p")

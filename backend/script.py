@@ -2,10 +2,9 @@ import pymongo
 from appium import webdriver
 from appium.options.android import UiAutomator2Options
 import time
-from openaiinternal import chatgptcall
+import openaiinternal
 from bson.objectid import ObjectId
 from datetime import datetime
-
 
 from appium.webdriver.common.appiumby import AppiumBy
 
@@ -256,7 +255,7 @@ def store_ai_messages() -> None:
     print(users)
     for user in users:
         automatedMessagesCollection.delete_many({"_id": ObjectId(user["_id"])})
-        res = chatgptcall(user)
+        res = openaiinternal.chatgptcall(user)
         # print(res)
         # time.sleep(1)
         print(user)
