@@ -12,6 +12,7 @@ from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
 import os
 import re
+from appiumscripts import *
 
 # Flask initialization
 app = Flask(__name__)
@@ -189,6 +190,22 @@ def send_text():
     el.click()
 
     return data
+
+@app.route("/runautoscraper", methods=['POST'])
+def run_autoscraper():
+    enable_currently_running_status(utilsCollection)
+    driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
+    scroll_up_to_top(driver)
+    shouldRunAI = test_select_first_10_user_and_read_message(driver, collection)
+    scroll_up_to_top(driver)
+    driver.quit()
+    if shouldRunAI:
+        try:
+            store_ai_messages(collection, automatedMessagesCollection)
+        except:
+            print("AI failed")
+    store_timestamp(utilsCollection)
+    return "Done"
 
 def type_text(text) -> None:
 

@@ -73,14 +73,13 @@ capabilities = dict(
 )
 appium_server_url = 'http://104.42.212.81:4723'
 
-def enable_currently_running_status(utilsCollection):
-    doc = utilsCollection.find()[0]
-    utilsCollection.update_one(doc, {"$set": {"currentlyRunning": True}})
+
 
 if __name__ == "__main__":
 
     totalNumberOfTimesRam = 0
     while True:
+        enable_currently_running_status(utilsCollection)
         driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
         scroll_up_to_top(driver)
         shouldRunAI = test_select_first_10_user_and_read_message(driver, collection)

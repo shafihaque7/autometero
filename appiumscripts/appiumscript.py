@@ -205,3 +205,7 @@ def store_ai_messages(collection, automatedMessagesCollection) -> None:
         automatedMessagesCollection.insert_one(userData)
         time.sleep(2)
 
+def enable_currently_running_status(utilsCollection):
+    doc = utilsCollection.find()[0]
+    utilsCollection.update_one(doc, {"$set": {"currentlyRunning": True}})
+

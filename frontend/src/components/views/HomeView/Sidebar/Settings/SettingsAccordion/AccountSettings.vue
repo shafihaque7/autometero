@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import type { Ref } from "vue";
 
 import useStore from "@src/store/store";
@@ -10,6 +10,7 @@ import Collapse from "@src/components/ui/utils/Collapse.vue";
 import TextInput from "@src/components/ui/inputs/TextInput.vue";
 import DropFileUpload from "@src/components/ui/inputs/DropFileUpload.vue";
 import Button from "@src/components/ui/inputs/Button.vue";
+import axios from "axios";
 
 // Types
 interface AccountValues {
@@ -50,10 +51,34 @@ const handleSubmit = () => {
     loading.value = false;
   }, 2000);
 };
+const lastUpdatedDateAndTime = ref("")
+
+const loadLastUpdated = async () => {
+  const axiosData = await axios.get("http://104.42.212.81:8080/getLastUpdated")
+
+  let lastUpdatedString = axiosData.data["lastUpdatedTimeForScraper"]
+
+  if (axiosData.data["currentlyRunning"] == true) {
+    lastUpdatedString += " (Currenly Running)"
+  }
+  // console.log(axiosData.data)
+  lastUpdatedDateAndTime.value = lastUpdatedString
+}
+
+onMounted(() => {
+  loadLastUpdated()
+});
+
 </script>
 
 <template>
   <!--account settings-->
+  <Typography variant="heading-2"> Last ran: {{ lastUpdatedDateAndTime }}</Typography>
+
+  <Button class="w-full py-4" >
+    Run Autoscraper
+  </Button>
+
   <AccordionButton
     id="account-settings-toggler"
     class="w-full flex px-5 py-6 mb-3 rounded focus:outline-none"
