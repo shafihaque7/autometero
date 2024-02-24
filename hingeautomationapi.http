@@ -12,10 +12,7 @@ Content-Type: application/json
 POST http://127.0.0.1:8080/runautoscraper
 Content-Type: application/json
 
-{
-  "userId":  "65c13a0735045765257fe90a",
-  "messageToSend" : "Hello how are you"
-}
+{}
 
 ###
 GET http://127.0.0.1:8080/appium

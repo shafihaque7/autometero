@@ -205,7 +205,15 @@ def run_autoscraper():
         except:
             print("AI failed")
     store_timestamp(utilsCollection)
-    return "Done"
+
+    # Show last updated
+    docs = utilsCollection.find()
+    print(docs[0])
+    data = {
+        "lastUpdatedTimeForScraper": docs[0]["lastUpdatedTimeForScraper"],
+        "currentlyRunning": docs[0]["currentlyRunning"]
+    }
+    return data
 
 def type_text(text) -> None:
 
