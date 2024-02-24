@@ -28,7 +28,10 @@ def scroll_up_to_top(driver) -> None:
 def store_timestamp(utilsCollection):
     dt_string = datetime.now().strftime("%m/%d/%Y %I:%M:%S %p")
     utilsCollection.delete_many({})
-    lastUpdatedTime = {"lastUpdatedTimeForScraper": dt_string}
+    lastUpdatedTime = {
+        "lastUpdatedTimeForScraper": dt_string,
+        "curretlyRunning": False
+    }
     utilsCollection.insert_one(lastUpdatedTime)
 
 def read_messages(driver, lastMessageShownOnHinge, doc, collection) -> None:

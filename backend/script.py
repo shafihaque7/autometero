@@ -73,7 +73,9 @@ capabilities = dict(
 )
 appium_server_url = 'http://104.42.212.81:4723'
 
-
+def enable_currently_running_status(utilsCollection):
+    doc = utilsCollection.find()[0]
+    utilsCollection.update_one(doc, {"$set": {"currentlyRunning": True}})
 
 if __name__ == "__main__":
     totalNumberOfTimesRam = 0
@@ -94,5 +96,4 @@ if __name__ == "__main__":
         store_timestamp(utilsCollection)
         time.sleep(600)
 
-    # Delete everything from database
 
