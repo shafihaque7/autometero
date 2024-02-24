@@ -68,8 +68,14 @@ const lastUpdatedDateAndTime = ref("")
 
 const loadLastUpdated = async () => {
   const axiosData = await axios.get("http://104.42.212.81:8080/getLastUpdated")
+
+  let lastUpdatedString = axiosData.data["lastUpdatedTimeForScraper"]
+
+  if (axiosData.data["currentlyRunning"] == true) {
+    lastUpdatedString += " (Currenly Running)"
+  }
   // console.log(axiosData.data)
-  lastUpdatedDateAndTime.value = axiosData.data["lastUpdatedTimeForScraper"]
+  lastUpdatedDateAndTime.value = lastUpdatedString
 }
 
 // if the active conversation is in the archive
