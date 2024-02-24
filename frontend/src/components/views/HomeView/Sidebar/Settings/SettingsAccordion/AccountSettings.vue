@@ -60,9 +60,19 @@ const loadLastUpdated = async () => {
 
   if (axiosData.data["currentlyRunning"] == true) {
     lastUpdatedString += " (Currenly Running)"
+    loading.value = true
   }
   // console.log(axiosData.data)
   lastUpdatedDateAndTime.value = lastUpdatedString
+}
+
+const runAutoScraper = async () => {
+  console.log("Running autoscraper")
+  loading.value = true
+  const axiosData = await axios.post("http://104.42.212.81:8080/runautoscraper", {})
+  loading.value = false
+
+
 }
 
 onMounted(() => {
@@ -75,7 +85,7 @@ onMounted(() => {
   <!--account settings-->
   <Typography variant="heading-2"> Last ran: {{ lastUpdatedDateAndTime }}</Typography>
 
-  <Button class="w-full py-4" >
+  <Button class="w-full py-4" :loading="loading" @click="runAutoScraper">
     Run Autoscraper
   </Button>
 
