@@ -120,6 +120,7 @@ def get_user(user_id):
 @app.route("/getLastUpdated")
 def get_last_updated():
     docs = utilsCollection.find()
+    print(docs[0])
     data = {
         "lastUpdatedTimeForScraper" : docs[0]["lastUpdatedTimeForScraper"],
         "currentlyRunning" : docs[0]["currentlyRunning"]

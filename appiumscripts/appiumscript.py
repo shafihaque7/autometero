@@ -30,7 +30,7 @@ def store_timestamp(utilsCollection):
     utilsCollection.delete_many({})
     lastUpdatedTime = {
         "lastUpdatedTimeForScraper": dt_string,
-        "curretlyRunning": False
+        "currentlyRunning": False
     }
     utilsCollection.insert_one(lastUpdatedTime)
 

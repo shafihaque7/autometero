@@ -78,6 +78,7 @@ def enable_currently_running_status(utilsCollection):
     utilsCollection.update_one(doc, {"$set": {"currentlyRunning": True}})
 
 if __name__ == "__main__":
+
     totalNumberOfTimesRam = 0
     while True:
         driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
