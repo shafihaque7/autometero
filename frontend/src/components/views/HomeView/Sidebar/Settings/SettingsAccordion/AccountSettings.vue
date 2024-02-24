@@ -71,6 +71,7 @@ const runAutoScraper = async () => {
   loading.value = true
   const axiosData = await axios.post("http://104.42.212.81:8080/runautoscraper", {})
   loading.value = false
+  lastUpdatedDateAndTime.value = axiosData.data["lastUpdatedTimeForScraper"]
 
 
 }
