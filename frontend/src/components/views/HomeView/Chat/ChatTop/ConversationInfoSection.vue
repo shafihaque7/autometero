@@ -14,6 +14,8 @@ import {
   NoSymbolIcon,
   PhoneIcon,
   ShareIcon,
+  ArrowPathIcon,
+
 } from "@heroicons/vue/24/outline";
 import Typography from "@src/components/ui/data-display/Typography.vue";
 import IconButton from "@src/components/ui/inputs/IconButton.vue";
@@ -67,6 +69,12 @@ const handleOpenVoiceCallModal = () => {
     store.openVoiceCall = true;
   }, 300);
 };
+
+const reloadConversation = async () => {
+  console.log("Reload conversation called")
+}
+
+
 </script>
 
 <template>
@@ -124,6 +132,18 @@ const handleOpenVoiceCallModal = () => {
     </div>
 
     <div class="flex" :class="{ hidden: store.status === 'loading' }">
+      <IconButton
+        title="refresh messages"
+        aria-label="refresh messages"
+        @click="reloadConversation"
+        class="group w-7 h-7 mr-3"
+      >
+        <ArrowPathIcon
+          class="w-[1.25rem] h-[1.25rem] text-gray-400 group-hover:text-indigo-300"
+        />
+      </IconButton>
+
+
       <!--search button-->
       <IconButton
         title="search messages"

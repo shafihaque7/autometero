@@ -132,24 +132,6 @@ def get_last_updated():
 
 @app.route("/ai/user/<user_id>")
 def get_ai_suggested_messages(user_id):
-
-    # user = collection.find_one({"_id": ObjectId(user_id)})
-    #
-    # messages = user["messages"]
-    #
-    # messageString = ""
-    # for m in messages:
-    #     messageString += m["user"] + ": " + m["message"] + "\n"
-    #
-    #
-    # requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me 3 example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
-    # request = requestToFormat.format(name=user["name"], messageString = messageString)
-    #
-    #
-    # result = chat_model.predict(request)
-    # print("result: ", str(result))
-    #
-    # return json.loads(result)
     print("called ai storage retrieval")
     print(user_id)
     user = automatedMessagesCollection.find_one({"_id" : ObjectId(user_id)})
@@ -184,12 +166,28 @@ def send_text():
     name = user["name"]
     lastMessageShownOnHinge = user["lastMessageShownOnHinge"]
     print(lastMessageShownOnHinge)
-    select_user_based_on_name_and_last_message(name, lastMessageShownOnHinge, data.get("messageToSend"))
+    select_user_based_on_name_and_last_message(driver, name, lastMessageShownOnHinge)
+    type_text(driver, data.get('messageToSend'))
+
     el = driver.find_element(by=AppiumBy.XPATH,
                              value='//android.widget.ImageView[@content-desc="Back to Matches"]')
     el.click()
 
     return data
+
+@app.route("/appium/refreshUserMessage", methods=['POST'])
+def refresh_user_message():
+    data = request.json
+    print(data.get('userId'))
+    user = collection.find_one({"_id": ObjectId(data.get('userId'))})
+    print(user)
+    name = user["name"]
+    lastMessageShownOnHinge = user["lastMessageShownOnHinge"]
+    select_user_based_on_name_and_last_message(driver, name, lastMessageShownOnHinge)
+    return "cool"
+
+
+
 
 @app.route("/runautoscraper", methods=['POST'])
 def run_autoscraper():
@@ -215,53 +213,7 @@ def run_autoscraper():
     }
     return data
 
-def type_text(text) -> None:
 
-    textbox = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="co.hinge.app:id/messageComposition"]')
-    textbox.send_keys(text)
-    el = driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/sendMessageButton')
-    el.click()
-
-def select_user_based_on_name_and_last_message(nameToSearch, lastMessageToSearch, messageToSend):
-
-    while True:
-
-        usersOnScreen = driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
-        numberOfUsersOnScreen = len(usersOnScreen)
-
-        for xPathCounter in range(1, numberOfUsersOnScreen + 1):
-            xpathString = '(//android.view.ViewGroup[@resource-id="co.hinge.app:id/viewForeground"])[{0}]'.format(
-                xPathCounter)
-
-            print("xpathString: " + str(xpathString))
-
-            try:
-                el = driver.find_element(by=AppiumBy.XPATH, value=xpathString)
-                name = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textSubjectName')
-                print("name text from users screen: ", name.text)
-
-                lastMessage = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
-                print(lastMessage.text)
-
-                if nameToSearch == name.text and lastMessageToSearch == lastMessage.text:
-
-                    el.click()
-                    print("Found and clicked")
-                    time.sleep(1)
-                    type_text(messageToSend)
-                    return
-
-
-
-            except:
-                print("Failed on xpath: " + xpathString)
-                continue
-        size = driver.get_window_size()
-        starty = (size['height'] * 0.80)
-        endy = (size['height'] * 0.50)
-        startx = size['width'] / 2
-        driver.swipe(startx, starty, startx, endy)
-        time.sleep(2)
 
 
 @app.route("/appium")

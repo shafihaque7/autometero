@@ -103,6 +103,52 @@ def read_messages(driver, lastMessageShownOnHinge, doc, collection) -> None:
     else:
         collection.update_one(doc, {"$set": user})
 
+def type_text(driver, text) -> None:
+
+    textbox = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="co.hinge.app:id/messageComposition"]')
+    textbox.send_keys(text)
+    el = driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/sendMessageButton')
+    el.click()
+def select_user_based_on_name_and_last_message(driver, nameToSearch, lastMessageToSearch):
+
+    while True:
+
+        usersOnScreen = driver.find_elements(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
+        numberOfUsersOnScreen = len(usersOnScreen)
+
+        for xPathCounter in range(1, numberOfUsersOnScreen + 1):
+            xpathString = '(//android.view.ViewGroup[@resource-id="co.hinge.app:id/viewForeground"])[{0}]'.format(
+                xPathCounter)
+
+            print("xpathString: " + str(xpathString))
+
+            try:
+                el = driver.find_element(by=AppiumBy.XPATH, value=xpathString)
+                name = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textSubjectName')
+                print("name text from users screen: ", name.text)
+
+                lastMessage = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
+                print(lastMessage.text)
+
+                if nameToSearch == name.text and lastMessageToSearch == lastMessage.text:
+
+                    el.click()
+                    print("Found and clicked")
+                    time.sleep(1)
+                    return
+
+
+
+            except:
+                print("Failed on xpath: " + xpathString)
+                continue
+        size = driver.get_window_size()
+        starty = (size['height'] * 0.80)
+        endy = (size['height'] * 0.50)
+        startx = size['width'] / 2
+        driver.swipe(startx, starty, startx, endy)
+        time.sleep(2)
+
 def test_select_first_10_user_and_read_message(driver, collection) -> bool:
     shouldRunAI = False
     totalNumberOfUsers = 10

@@ -9,6 +9,14 @@ Content-Type: application/json
 }
 
 ###
+POST http://127.0.0.1:8080/appium/refreshUserMessage
+Content-Type: application/json
+
+{
+  "userId":  "65d168b8e5e69003db90d73a"
+}
+
+###
 POST http://127.0.0.1:8080/runautoscraper
 Content-Type: application/json
 
