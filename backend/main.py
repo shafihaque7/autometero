@@ -179,6 +179,7 @@ def send_text():
 def refresh_user_message():
     # Check to make sure that the autoscraper is not running
     driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
+    scroll_up_to_top(driver)
     doc = utilsCollection.find()[0]
     if doc["currentlyRunning"] == False:
         data = request.json
@@ -193,6 +194,7 @@ def refresh_user_message():
                                  value='//android.widget.ImageView[@content-desc="Back to Matches"]')
         el.click()
         return scrapedUser["messages"]
+    scroll_up_to_top(driver)
     return "The autoscraper is running"
 
 
