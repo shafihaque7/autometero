@@ -193,8 +193,8 @@ def refresh_user_message():
         el = driver.find_element(by=AppiumBy.XPATH,
                                  value='//android.widget.ImageView[@content-desc="Back to Matches"]')
         el.click()
+        scroll_up_to_top(driver)
         return scrapedUser["messages"]
-    scroll_up_to_top(driver)
     return "The autoscraper is running"
 
 
