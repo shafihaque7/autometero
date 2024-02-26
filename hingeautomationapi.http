@@ -2,8 +2,8 @@ POST http://127.0.0.1:8080/appium/sendtext
 Content-Type: application/json
 
 {
-  "userId":  "65c13a0735045765257fe90a",
-  "messageToSend" : "Hello how are you"
+  "userId":  "65d52255bab42ab9b19d587a",
+  "messageToSend" : "My guess would be you hate it"
 
 
 }

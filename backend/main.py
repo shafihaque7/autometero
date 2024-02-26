@@ -169,11 +169,14 @@ def send_text():
     select_user_based_on_name_and_last_message(driver, name, lastMessageShownOnHinge)
     type_text(driver, data.get('messageToSend'))
 
+    scrapedUser = read_messages(driver, lastMessageShownOnHinge, user, collection)
+
     el = driver.find_element(by=AppiumBy.XPATH,
                              value='//android.widget.ImageView[@content-desc="Back to Matches"]')
     el.click()
+    scroll_up_to_top(driver)
 
-    return data
+    return scrapedUser["messages"]
 
 @app.route("/appium/refreshUserMessage", methods=['POST'])
 def refresh_user_message():
