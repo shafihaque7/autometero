@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from "vue";
-import type { IConversation } from "@src/types";
+import type { IConversation, IMessage } from "@src/types";
 
 import useStore from "@src/store/store";
 import { ref, inject, onMounted } from "vue";
@@ -84,6 +84,36 @@ const sendMessage = async () => {
     "userId": conversationObjectId,
     "messageToSend": activeConversation.draftMessage
   })
+
+  const allMessages: IMessage[] = []
+
+  const serverMessages = axiosData.data
+  serverMessages.forEach(function(msg: any){
+    let idCounter = 3
+
+    const someData = {
+      id: idCounter++,
+      content:
+        msg["message"],
+      date: "5:30 pm",
+      state: "read",
+      sender: {
+        id: (msg["user"] == "You") ? 1 : 45454,
+        firstName: "Dawn",
+        lastName: "Sabrina",
+        lastSeen: new Date(),
+        email: "sabrina@gmail.com",
+        avatar:
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      }
+
+    }
+
+    allMessages.push(someData)
+
+  })
+
+  activeConversation.messages = allMessages
 
 }
 

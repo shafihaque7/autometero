@@ -158,6 +158,7 @@ def get_ai_notifications():
 
 @app.route("/appium/sendtext", methods=['POST'])
 def send_text():
+    driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
     data = request.json
     print(data.get('userId'))
     print(data.get('messageToSend'))
