@@ -85,14 +85,13 @@ const reloadConversation = async () => {
 
   const serverMessages = axiosData.data
   serverMessages.forEach(function(msg: any){
-    console.log("each msg")
     let idCounter = 3
 
     const someData = {
       id: idCounter++,
       content:
         msg["message"],
-      date: "5:00 pm",
+      date: "5:30 pm",
       state: "read",
       sender: {
         id: (msg["user"] == "You") ? 1 : 45454,
@@ -106,13 +105,15 @@ const reloadConversation = async () => {
 
     }
 
-    activeConversation.messages = allMessages
+    allMessages.push(someData)
 
   })
 
+  activeConversation.messages = allMessages
 
 
-  console.log(axiosData)
+
+
 
 }
 
