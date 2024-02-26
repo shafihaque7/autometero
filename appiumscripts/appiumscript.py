@@ -25,6 +25,26 @@ def scroll_up_to_top(driver) -> None:
         except:
             continue
 
+async def async_scroll_up_to_top(driver) -> None:
+    # Scroll up for up to 30 seconds
+    t_end = time.time() + 30
+    while time.time() < t_end:
+        try:
+            size = driver.get_window_size()
+            starty = (size['height'] * 0.50)
+            endy = (size['height'] * 0.80)
+            startx = size['width'] / 2
+            driver.swipe(startx, starty, startx, endy)
+            # time.sleep(1)
+            el = driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/section_title')
+            sectionTitle = el.text
+            if sectionTitle[:9] == "Your turn":
+                break
+        except:
+            continue
+
+
+
 def store_timestamp(utilsCollection):
     dt_string = datetime.now().strftime("%m/%d/%Y %I:%M:%S %p")
     utilsCollection.delete_many({})

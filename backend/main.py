@@ -13,6 +13,9 @@ from dotenv import load_dotenv
 import os
 import re
 from appiumscripts import *
+import asyncio
+loop = asyncio.get_event_loop()
+
 
 # Flask initialization
 app = Flask(__name__)
@@ -155,6 +158,16 @@ def get_ai_notifications():
         res.append(data)
     return res
 
+async def abar(a):
+    time.sleep(10)
+    print(a)
+
+@app.route("/checkasync")
+def check_async():
+    # loop.run_until_complete(abar("ssss"))
+    abar("ssss")
+    return "OK"
+
 @app.route("/appium/sendtext", methods=['POST'])
 def send_text():
     driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
@@ -174,7 +187,7 @@ def send_text():
     el = driver.find_element(by=AppiumBy.XPATH,
                              value='//android.widget.ImageView[@content-desc="Back to Matches"]')
     el.click()
-    scroll_up_to_top(driver)
+    loop.run_until_complete(async_scroll_up_to_top(driver))
 
     return scrapedUser["messages"]
 
@@ -196,7 +209,7 @@ def refresh_user_message():
         el = driver.find_element(by=AppiumBy.XPATH,
                                  value='//android.widget.ImageView[@content-desc="Back to Matches"]')
         el.click()
-        scroll_up_to_top(driver)
+        loop.run_until_complete(async_scroll_up_to_top(driver))
         return scrapedUser["messages"]
     return "The autoscraper is running"
 
