@@ -178,6 +178,7 @@ def send_text():
 @app.route("/appium/refreshUserMessage", methods=['POST'])
 def refresh_user_message():
     # Check to make sure that the autoscraper is not running
+    driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
     doc = utilsCollection.find()[0]
     if doc["currentlyRunning"] == False:
         data = request.json

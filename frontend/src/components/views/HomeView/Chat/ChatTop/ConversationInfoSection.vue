@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { IConversation } from "@src/types";
+import type { IConversation, IMessage } from "@src/types";
 
 import { activeCall } from "@src/store/defaults";
 import useStore from "@src/store/store";
-import { getAvatar, getName } from "@src/utils";
+import { getAvatar, getConversationObjectId, getName } from "@src/utils";
 import { inject, ref } from "vue";
 
 import {
@@ -21,6 +21,7 @@ import Typography from "@src/components/ui/data-display/Typography.vue";
 import IconButton from "@src/components/ui/inputs/IconButton.vue";
 import Dropdown from "@src/components/ui/navigation/Dropdown/Dropdown.vue";
 import DropdownLink from "@src/components/ui/navigation/Dropdown/DropdownLink.vue";
+import axios from "axios";
 
 const props = defineProps<{
   handleOpenInfo: () => void;
@@ -72,8 +73,47 @@ const handleOpenVoiceCallModal = () => {
 
 const reloadConversation = async () => {
   console.log("Reload conversation called")
-  console.log("current active conversation", activeConversation)
-  activeConversation.messages[0].content = "Checking if changed work"
+  // console.log("current active conversation", activeConversation)
+  // activeConversation.messages[0].content = "Checking if changed work"
+
+  const conversationObjectId = getConversationObjectId(activeConversation.id)
+  const axiosData = await axios.post("http://104.42.212.81:8080/appium/refreshUserMessage", {
+    "userId": conversationObjectId
+  })
+
+  const allMessages: IMessage[] = []
+
+  const serverMessages = axiosData.data
+  serverMessages.forEach(function(msg: any){
+    console.log("each msg")
+    let idCounter = 3
+
+    const someData = {
+      id: idCounter++,
+      content:
+        msg["message"],
+      date: "5:00 pm",
+      state: "read",
+      sender: {
+        id: (msg["user"] == "You") ? 1 : 45454,
+        firstName: "Dawn",
+        lastName: "Sabrina",
+        lastSeen: new Date(),
+        email: "sabrina@gmail.com",
+        avatar:
+          "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      }
+
+    }
+
+    activeConversation.messages = allMessages
+
+  })
+
+
+
+  console.log(axiosData)
+
 }
 
 
