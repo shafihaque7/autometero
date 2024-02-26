@@ -177,14 +177,22 @@ def send_text():
 
 @app.route("/appium/refreshUserMessage", methods=['POST'])
 def refresh_user_message():
-    data = request.json
-    print(data.get('userId'))
-    user = collection.find_one({"_id": ObjectId(data.get('userId'))})
-    print(user)
-    name = user["name"]
-    lastMessageShownOnHinge = user["lastMessageShownOnHinge"]
-    select_user_based_on_name_and_last_message(driver, name, lastMessageShownOnHinge)
-    return "cool"
+    # Check to make sure that the autoscraper is not running
+    doc = utilsCollection.find()[0]
+    if doc["currentlyRunning"] == False:
+        data = request.json
+        print(data.get('userId'))
+        user = collection.find_one({"_id": ObjectId(data.get('userId'))})
+        print(user)
+        name = user["name"]
+        lastMessageShownOnHinge = user["lastMessageShownOnHinge"]
+        select_user_based_on_name_and_last_message(driver, name, lastMessageShownOnHinge)
+        scrapedUser = read_messages(driver, user["lastMessageShownOnHinge"], user, collection)
+        el = driver.find_element(by=AppiumBy.XPATH,
+                                 value='//android.widget.ImageView[@content-desc="Back to Matches"]')
+        el.click()
+        return scrapedUser["messages"]
+    return "The autoscraper is running"
 
 
 

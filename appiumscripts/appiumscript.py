@@ -103,6 +103,8 @@ def read_messages(driver, lastMessageShownOnHinge, doc, collection) -> None:
     else:
         collection.update_one(doc, {"$set": user})
 
+    return user
+
 def type_text(driver, text) -> None:
 
     textbox = driver.find_element(by=AppiumBy.XPATH, value='//android.widget.EditText[@resource-id="co.hinge.app:id/messageComposition"]')

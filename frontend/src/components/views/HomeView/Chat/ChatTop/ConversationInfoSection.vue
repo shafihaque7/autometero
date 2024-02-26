@@ -72,6 +72,8 @@ const handleOpenVoiceCallModal = () => {
 
 const reloadConversation = async () => {
   console.log("Reload conversation called")
+  console.log("current active conversation", activeConversation)
+  activeConversation.messages[0].content = "Checking if changed work"
 }
 
 
