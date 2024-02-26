@@ -89,8 +89,7 @@ capabilities = dict(
     locale='US'
 )
 appium_server_url = 'http://104.42.212.81:4723'
-driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
-
+# driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
 @app.route("/")
 def get_all_users():
     res = []
@@ -233,6 +232,7 @@ def run_autoscraper():
 
 @app.route("/appium")
 def get_appium_users():
+    driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
     totalNumberOfUsers = 5
     currentUserCount = 1
     allGirls = []
