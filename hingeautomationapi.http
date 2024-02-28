@@ -43,11 +43,11 @@ GET http://127.0.0.1:8080/user/65b97a812d5ee8a9173907d4
 Accept: application/json
 
 ###
-GET http://127.0.0.1:8080/ai/user/65d168b8e5e69003db90d73a
+GET http://127.0.0.1:8080/ai/user/65d52255bab42ab9b19d587a
 Accept: application/json
 
 ###
-GET http://104.42.212.81:8080/ai/user/65d168b8e5e69003db90d73a
+GET http://104.42.212.81:8080/ai/user/65d52255bab42ab9b19d587a
 Accept: application/json
 
 ###

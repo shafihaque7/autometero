@@ -65,6 +65,7 @@ export interface IConversation {
   admins?: number[];
   contacts: IContact[];
   messages: IMessage[];
+  aiMessages?: IMessage[];
   pinnedMessage?: IMessage;
   pinnedMessageHidden?: boolean;
   replyMessage?: IMessage;

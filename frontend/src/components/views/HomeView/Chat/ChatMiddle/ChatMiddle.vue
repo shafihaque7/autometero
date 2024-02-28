@@ -19,7 +19,6 @@ const props = defineProps<{
 
 const store = useStore();
 
-const aiMessages = ref([])
 
 const container: Ref<HTMLElement | null> = ref(null);
 
@@ -85,7 +84,8 @@ const loadAIData = async () => {
     })
 
     // aiMessages.value = axiosData.data["aiMessages"]
-    aiMessages.value = allAiMessages
+
+    activeConversation.aiMessages = allAiMessages
 
 
 
@@ -149,7 +149,7 @@ onMounted(() => {
     </div>
 
 
-    <div v-for="aimsg in aiMessages">
+    <div v-for="aimsg in activeConversation.aiMessages">
       <Message
         class="cursor-pointer"
         @click="changeDraftMessage(aimsg)"
