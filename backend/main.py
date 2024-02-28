@@ -145,6 +145,33 @@ def get_ai_suggested_messages(user_id):
     }
     return data
 
+@app.route("/ai/refreshmessages/<user_id>")
+def refresh_ai_messages_for_user(user_id):
+    user = collection.find_one({"_id" : ObjectId(user_id)})
+    res = openaiinternal.chatgptcall(user, 5)
+
+    userData = {
+        "_id": user["_id"],
+        "name": user["name"],
+        "aiMessages": res,
+        "aiMessageToSend": res[0] if len(res) > 0 else None
+    }
+    automatedMessagesCollection.delete_many({"_id": ObjectId(user_id)})
+    automatedMessagesCollection.insert_one(userData)
+
+
+    user = automatedMessagesCollection.find_one({"_id": ObjectId(user_id)})
+    data = {
+        "_id": str(user["_id"]),
+        "name": user["name"],
+        "aiMessages": user["aiMessages"],
+        "aiMessageToSend": user["aiMessageToSend"]
+    }
+    return data
+
+
+
+
 @app.route("/ai/notifications")
 def get_ai_notifications():
     users = automatedMessagesCollection.find()

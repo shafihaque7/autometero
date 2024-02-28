@@ -207,7 +207,7 @@ class TestAppium(unittest.TestCase):
     def test_alanis_open_req(self) -> None:
         user = collection.find_one({"_id" : ObjectId("65d168b8e5e69003db90d73a")})
 
-        res = openaiinternal.chatgptcall(user)
+        res = openaiinternal.chatgptcall(user, 5)
         print(res)
 
 
