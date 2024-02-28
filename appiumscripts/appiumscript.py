@@ -131,7 +131,10 @@ def type_text(driver, text) -> None:
     textbox.send_keys(text)
     el = driver.find_element(by=AppiumBy.ID, value='co.hinge.app:id/sendMessageButton')
     el.click()
-def select_user_based_on_name_and_last_message(driver, nameToSearch, lastMessageToSearch):
+
+def select_user_based_on_name(driver, nameToSearch):
+    select_user_based_on_name_and_last_message(driver, nameToSearch)
+def select_user_based_on_name_and_last_message(driver, nameToSearch, lastMessageToSearch=None):
 
     while True:
 
@@ -152,7 +155,13 @@ def select_user_based_on_name_and_last_message(driver, nameToSearch, lastMessage
                 lastMessage = el.find_element(by=AppiumBy.ID, value='co.hinge.app:id/textLastMessage')
                 print(lastMessage.text)
 
-                if nameToSearch == name.text and lastMessageToSearch == lastMessage.text:
+                if lastMessageToSearch == None and nameToSearch == name.text:
+                    el.click()
+                    print("Found and clicked")
+                    time.sleep(1)
+                    return
+
+                elif lastMessageToSearch != None and nameToSearch == name.text and lastMessageToSearch == lastMessage.text:
 
                     el.click()
                     print("Found and clicked")

@@ -225,6 +225,23 @@ const reloadConversation = async () => {
           :handle-click-outside="handleClickOutside"
           aria-labelledby="open-conversation-menu"
         >
+
+          <DropdownLink
+            :handle-click="
+              () => {
+                handleCloseDropdown();
+                reloadConversation();
+                // props.handleOpenInfo();
+              }
+            "
+          >
+            <ArrowPathIcon
+              class="h-5 w-5 mr-3 text-black opacity-60 dark:text-white dark:opacity-70"
+            />
+            Reload Conversation
+          </DropdownLink>
+
+
           <DropdownLink
             :handle-click="
               () => {
