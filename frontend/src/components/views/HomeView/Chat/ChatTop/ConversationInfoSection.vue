@@ -110,11 +110,51 @@ const reloadConversation = async () => {
   })
 
   activeConversation.messages = allMessages
+}
+
+const refreshAiData = async () => {
+
+  const conversationObjectId = getConversationObjectId(activeConversation.id)
+  if (conversationObjectId !== undefined) {
+    console.log("conversation object id is", conversationObjectId)
+
+    const axiosData = await axios.get("http://104.42.212.81:8080/ai/refreshmessages/" + conversationObjectId)
+    // const axiosData = await axios.get("http://127.0.0.1:8080/ai/user/" + conversationObjectId)
+    // console.log(axiosData.data)
+
+    const allAiMessages: IMessage[] = []
+
+    const dataAiMessages = axiosData.data["aiMessages"]
+
+    let idNumberiMessage = 20
+
+    dataAiMessages.forEach(function(aiMsg: string){
+      const aiImessage: IMessage = {
+        id: idNumberiMessage,
+        content: aiMsg,
+        date: "",
+        state: "read",
+        sender: {
+          id: 1,
+          firstName: "Dawn",
+          lastName: "Sabrina",
+          lastSeen: new Date(),
+          email: "sabrina@gmail.com",
+          avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        }
+      }
+      allAiMessages.push(aiImessage)
+    })
+
+    // aiMessages.value = axiosData.data["aiMessages"]
+
+    activeConversation.aiMessages = allAiMessages
 
 
 
+    activeConversation.draftMessage = axiosData.data["aiMessageToSend"]
 
-
+  }
 }
 
 
@@ -178,7 +218,7 @@ const reloadConversation = async () => {
       <IconButton
         title="refresh messages"
         aria-label="refresh messages"
-        @click="reloadConversation"
+        @click="refreshAiData"
         class="group w-7 h-7 mr-3"
       >
         <ArrowPathIcon

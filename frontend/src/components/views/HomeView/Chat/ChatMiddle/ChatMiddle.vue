@@ -91,7 +91,6 @@ const loadAIData = async () => {
 
     activeConversation.draftMessage = axiosData.data["aiMessageToSend"]
 
-    console.log(aiMessages.value)
   }
 }
 
