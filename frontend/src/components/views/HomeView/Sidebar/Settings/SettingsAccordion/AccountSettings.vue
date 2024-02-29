@@ -53,11 +53,12 @@ const handleSubmit = () => {
   }, 2000);
 };
 const lastUpdatedDateAndTime = ref("")
+const chatgptPrompt = ref("")
 
 const loadLastUpdated = async () => {
   const axiosData = await axios.get("http://104.42.212.81:8080/getLastUpdated")
-
   let lastUpdatedString = axiosData.data["lastUpdatedTimeForScraper"]
+
 
   if (axiosData.data["currentlyRunning"] == true) {
     lastUpdatedString += " (Currenly Running)"
@@ -65,6 +66,7 @@ const loadLastUpdated = async () => {
   }
   // console.log(axiosData.data)
   lastUpdatedDateAndTime.value = lastUpdatedString
+  chatgptPrompt.value = axiosData.data["chatgptPrompt"]
 }
 
 const runAutoScraper = async () => {
@@ -108,7 +110,7 @@ onMounted(() => {
       rows="8"
       label="Current Chatgpt prompt"
       class="mb-7"
-      value='Test whatever the prompt is atm'
+      :value="chatgptPrompt"
       @value-changed="(value) => (accountValues.firstName = value)"
     />
 

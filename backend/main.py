@@ -131,6 +131,18 @@ def get_last_updated():
     }
     return data
 
+@app.route("/ai/updatePrompt", methods=["POST"])
+def update_prompt():
+    data = request.json
+    updatedPrompt = data.get("updatedPrompt")
+
+    doc = utilsCollection.find()[0]
+    # requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me {number} example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
+    utilsCollection.update_one(doc, {"$set": {"chatgptPrompt": updatedPrompt}})
+
+    return updatedPrompt
+
+
 
 
 @app.route("/ai/user/<user_id>")

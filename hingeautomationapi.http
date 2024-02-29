@@ -17,6 +17,14 @@ Content-Type: application/json
 }
 
 ###
+POST http://127.0.0.1:8080/ai/updatePrompt
+Content-Type: application/json
+
+{
+  "updatedPrompt":  "SomeUpdated promptCheck"
+}
+
+###
 POST http://104.42.212.81:8080/appium/refreshUserMessage
 Content-Type: application/json
 
