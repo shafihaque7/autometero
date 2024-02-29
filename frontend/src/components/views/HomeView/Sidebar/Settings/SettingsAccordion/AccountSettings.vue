@@ -37,20 +37,17 @@ const accountValues: Ref<AccountValues> = ref({
 const loading = ref(false);
 
 // (event) handle submitting the values of the form.
-const handleSubmit = () => {
+const handleSubmit = async () => {
   loading.value = true;
 
-  store.$patch({
-    user: {
-      ...store.user,
-      firstName: accountValues.value.firstName,
-      lastName: accountValues.value.lastName,
-    },
-  });
+  const axiosData = await axios.post("http://104.42.212.81:8080/ai/updatePrompt", {
+    "updatedPrompt": chatgptPrompt.value,
+  })
 
-  setTimeout(() => {
-    loading.value = false;
-  }, 2000);
+
+  console.log(chatgptPrompt.value)
+
+  loading.value = false
 };
 const lastUpdatedDateAndTime = ref("")
 const chatgptPrompt = ref("")
@@ -111,6 +108,7 @@ onMounted(() => {
       label="Current Chatgpt prompt"
       class="mb-7"
       :value="chatgptPrompt"
+      v-model="chatgptPrompt"
       @value-changed="(value) => (accountValues.firstName = value)"
     />
 
