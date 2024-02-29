@@ -11,6 +11,7 @@ import TextInput from "@src/components/ui/inputs/TextInput.vue";
 import DropFileUpload from "@src/components/ui/inputs/DropFileUpload.vue";
 import Button from "@src/components/ui/inputs/Button.vue";
 import axios from "axios";
+import Textarea from "@src/components/ui/inputs/Textarea.vue";
 
 // Types
 interface AccountValues {
@@ -84,7 +85,7 @@ onMounted(() => {
 
 <template>
   <!--account settings-->
-  <Typography variant="heading-2"> Last ran: {{ lastUpdatedDateAndTime }}</Typography>
+  <Typography variant="heading-2" class="mb-4"> Last ran: {{ lastUpdatedDateAndTime }}</Typography>
 
   <Button class="w-full py-4" :loading="loading" @click="runAutoScraper">
     Run Autoscraper
@@ -98,30 +99,38 @@ onMounted(() => {
     aria-controls="account-settings-collapse"
     @click="handleToggle()"
   >
-    <Typography variant="heading-2" class="mb-4"> Account </Typography>
-    <Typography variant="body-2"> Update your profile details</Typography>
+    <Typography variant="heading-2" class="mb-4"> AI Settings </Typography>
+    <Typography variant="body-2"> Update your AI prompt</Typography>
   </AccordionButton>
 
   <Collapse id="account-settings-collapse" :collapsed="props.collapsed">
-    <TextInput
-      label="First name"
+    <Textarea
+      rows="8"
+      label="Current Chatgpt prompt"
       class="mb-7"
-      :value="accountValues?.firstName"
+      value='Test whatever the prompt is atm'
       @value-changed="(value) => (accountValues.firstName = value)"
     />
-    <TextInput
-      label="Last name"
-      class="mb-7"
-      :value="accountValues?.lastName"
-      @value-changed="(value) => (accountValues.lastName = value)"
-    />
-    <DropFileUpload
-      label="Avatar"
-      class="mb-7"
-      accept="image/*"
-      :value="accountValues.avatar"
-      @value-changed="(value) => (accountValues.avatar = value)"
-    />
+
+<!--    <TextInput-->
+<!--      label="First name"-->
+<!--      class="mb-7"-->
+<!--      :value="accountValues?.firstName"-->
+<!--      @value-changed="(value) => (accountValues.firstName = value)"-->
+<!--    />-->
+<!--    <TextInput-->
+<!--      label="Last name"-->
+<!--      class="mb-7"-->
+<!--      :value="accountValues?.lastName"-->
+<!--      @value-changed="(value) => (accountValues.lastName = value)"-->
+<!--    />-->
+<!--    <DropFileUpload-->
+<!--      label="Avatar"-->
+<!--      class="mb-7"-->
+<!--      accept="image/*"-->
+<!--      :value="accountValues.avatar"-->
+<!--      @value-changed="(value) => (accountValues.avatar = value)"-->
+<!--    />-->
     <Button class="w-full py-4" @click="handleSubmit" :loading="loading">
       Save Settings
     </Button>

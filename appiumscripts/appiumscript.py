@@ -47,12 +47,12 @@ async def async_scroll_up_to_top(driver) -> None:
 
 def store_timestamp(utilsCollection):
     dt_string = datetime.now().strftime("%m/%d/%Y %I:%M:%S %p")
-    utilsCollection.delete_many({})
+    doc = utilsCollection.find()[0]
     lastUpdatedTime = {
         "lastUpdatedTimeForScraper": dt_string,
         "currentlyRunning": False
     }
-    utilsCollection.insert_one(lastUpdatedTime)
+    utilsCollection.update_one(doc, {"$set": lastUpdatedTime})
 
 def read_messages(driver, lastMessageShownOnHinge, doc, collection) -> None:
 
@@ -261,13 +261,13 @@ def test_select_first_10_user_and_read_message(driver, collection) -> bool:
         time.sleep(2)
         return shouldRunAI
 
-def store_ai_messages(collection, automatedMessagesCollection) -> None:
+def store_ai_messages(collection, automatedMessagesCollection, utilsCollection) -> None:
     # users = collection.find({"unread" : 1})
     users = collection.find()
     print(users)
     for user in users:
         automatedMessagesCollection.delete_many({"_id": ObjectId(user["_id"])})
-        res = openaiinternal.chatgptcall(user)
+        res = openaiinternal.chatgptcall(user, 3, utilsCollection)
         # print(res)
         # time.sleep(1)
         print(user)

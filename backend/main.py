@@ -126,7 +126,8 @@ def get_last_updated():
     print(docs[0])
     data = {
         "lastUpdatedTimeForScraper" : docs[0]["lastUpdatedTimeForScraper"],
-        "currentlyRunning" : docs[0]["currentlyRunning"]
+        "currentlyRunning" : docs[0]["currentlyRunning"],
+        "chatgptPrompt": docs[0]["chatgptPrompt"]
     }
     return data
 
@@ -148,7 +149,7 @@ def get_ai_suggested_messages(user_id):
 @app.route("/ai/refreshmessages/<user_id>")
 def refresh_ai_messages_for_user(user_id):
     user = collection.find_one({"_id" : ObjectId(user_id)})
-    res = openaiinternal.chatgptcall(user, 5)
+    res = openaiinternal.chatgptcall(user, 5, utilsCollection)
 
     userData = {
         "_id": user["_id"],
@@ -253,7 +254,7 @@ def run_autoscraper():
     driver.quit()
     if shouldRunAI:
         try:
-            store_ai_messages(collection, automatedMessagesCollection)
+            store_ai_messages(collection, automatedMessagesCollection, utilsCollection)
         except:
             print("AI failed")
     store_timestamp(utilsCollection)

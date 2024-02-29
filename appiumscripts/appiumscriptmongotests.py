@@ -11,6 +11,8 @@ import sys
 
 from selenium.webdriver.common.by import By
 
+from appiumscripts import store_timestamp
+
 capabilities = dict(
     platformName='Android',
     automationName='uiautomator2',
@@ -189,7 +191,7 @@ class TestAppium(unittest.TestCase):
         print(users)
         for user in users:
             automatedMessagesCollection.delete_many({"_id": ObjectId(user["_id"])})
-            res = openaiinternal.chatgptcall(user)
+            res = openaiinternal.chatgptcall(user, 3, utilsCollection)
             # print(res)
             # time.sleep(1)
             print(user)
@@ -207,8 +209,19 @@ class TestAppium(unittest.TestCase):
     def test_alanis_open_req(self) -> None:
         user = collection.find_one({"_id" : ObjectId("65d168b8e5e69003db90d73a")})
 
-        res = openaiinternal.chatgptcall(user, 5)
+        res = openaiinternal.chatgptcall(user, 5, utilsCollection)
         print(res)
+
+    def test_store_chatgpt_prompt(self) -> None:
+
+        doc = utilsCollection.find()[0]
+        requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me {number} example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
+        utilsCollection.update_one(doc, {"$set": {"chatgptPrompt": requestToFormat}})
+
+    def test_store_timestamp_updated(self) -> None:
+        store_timestamp(utilsCollection)
+
+
 
 
     def test_get_ai_message_from_db(self) -> None:

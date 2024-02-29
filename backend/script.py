@@ -89,7 +89,7 @@ if __name__ == "__main__":
         driver.quit()
         if shouldRunAI:
             try:
-                store_ai_messages(collection, automatedMessagesCollection)
+                store_ai_messages(collection, automatedMessagesCollection, utilsCollection)
             except:
                 print("AI failed")
 
