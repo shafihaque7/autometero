@@ -29,6 +29,12 @@ docker run -itd --privileged \
  -p 5555:5555 \
  redroid/redroid:11.0.0-latest
 
+docker run -itd --privileged \
+ --name androidemu2 \
+ -v ~/data:/data \
+ -p 5555:5555 \
+ redroid/redroid:14.0.0-latest
+
 # Removing the docker container
 docker container rm -f androidemu
 
@@ -54,6 +60,12 @@ tmux a -t 0
 tmux kill-session -t bob
 
 ctr b + % // for new window
+
+
+# How to use screen
+screen -XS <session-id> quit
+screen -ls
+screen -r 
 
 
 
