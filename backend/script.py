@@ -82,14 +82,14 @@ if __name__ == "__main__":
         enable_currently_running_status(utilsCollection)
         driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
         scroll_up_to_top(driver)
-        shouldRunAI = test_select_first_10_user_and_read_message(driver, collection)
+        usersToRunAI = test_select_first_10_user_and_read_message(driver, collection)
         scroll_up_to_top(driver)
         totalNumberOfTimesRam +=1
         print("Total number of times the autoscraper ran: ",totalNumberOfTimesRam)
         driver.quit()
-        if shouldRunAI:
+        if len(usersToRunAI) > 0:
             try:
-                store_ai_messages(collection, automatedMessagesCollection, utilsCollection)
+                store_ai_messages(usersToRunAI, collection, automatedMessagesCollection, utilsCollection)
             except:
                 print("AI failed")
 

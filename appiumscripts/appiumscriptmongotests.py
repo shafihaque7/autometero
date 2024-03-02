@@ -20,6 +20,7 @@ capabilities = dict(
     language='en',
     locale='US'
 )
+from appiumscripts import *
 
 # appium_server_url = 'http://localhost:4723'
 appium_server_url = 'http://104.42.212.81:4723'
@@ -218,8 +219,14 @@ class TestAppium(unittest.TestCase):
         requestToFormat = """Imagine you are a guy on hinge. This is the conversation you are having with {name}. "{messageString}" Give me {number} example of questions you could ask. Return in format [ "<example 1>", "<example 2>", "<example 3>" ]"""
         utilsCollection.update_one(doc, {"$set": {"chatgptPrompt": requestToFormat}})
 
+
     def test_store_timestamp_updated(self) -> None:
         store_timestamp(utilsCollection)
+
+    def test_scraping_10_user(self) -> None:
+        res = test_select_first_10_user_and_read_message(self.driver, collection)
+
+        store_ai_messages(res, collection, automatedMessagesCollection, utilsCollection)
 
 
 
@@ -227,6 +234,11 @@ class TestAppium(unittest.TestCase):
     def test_get_ai_message_from_db(self) -> None:
         user = automatedMessagesCollection.find_one({"_id" : ObjectId("65cd2a53339e0220b0373fa3")})
         print(user)
+        
+    def test_get_user_by_name_and_last_message(self) -> None:
+        doc = collection.find_one({"name" : "Anya", "lastMessageShownOnHinge": "I wanna know where you get your…"})
+
+        print(doc)
 
     def test_collection_find_by_name(self) -> None:
         doc = collection.find_one({"name":"LaShia"})

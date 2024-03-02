@@ -185,6 +185,8 @@ def test_select_first_10_user_and_read_message(driver, collection) -> bool:
     totalNumberOfUsers = 10
     currentUserCount = 1
     allGirls = []
+    allUserToRunAI = []
+
 
     while currentUserCount <= totalNumberOfUsers:
 
@@ -233,8 +235,9 @@ def test_select_first_10_user_and_read_message(driver, collection) -> bool:
                 if doc is None:
                     el.click()
                     time.sleep(1)
-                    read_messages(driver, lastMessageText, None, collection)
+                    userToRunAI = read_messages(driver, lastMessageText, None, collection)
                     shouldRunAI = True
+                    allUserToRunAI.append(userToRunAI)
 
                 else:
                     if doc["lastMessageShownOnHinge"] == lastMessageText:
@@ -243,8 +246,9 @@ def test_select_first_10_user_and_read_message(driver, collection) -> bool:
                         # Update the document
                         el.click()
                         time.sleep(1)
-                        read_messages(driver, lastMessageText, doc, collection)
+                        userToRunAI = read_messages(driver, lastMessageText, doc, collection)
                         shouldRunAI = True
+                        allUserToRunAI.append(userToRunAI)
 
 
                 el = driver.find_element(by=AppiumBy.XPATH,
@@ -259,24 +263,48 @@ def test_select_first_10_user_and_read_message(driver, collection) -> bool:
         startx = size['width'] / 2
         driver.swipe(startx, starty, startx, endy)
         time.sleep(2)
-        return shouldRunAI
+    return allUserToRunAI
 
-def store_ai_messages(collection, automatedMessagesCollection, utilsCollection) -> None:
-    # users = collection.find({"unread" : 1})
-    users = collection.find()
-    print(users)
+
+# Deprecated store_ai_messages
+# def store_ai_messages(collection, automatedMessagesCollection, utilsCollection) -> None:
+#     # users = collection.find({"unread" : 1})
+#     users = collection.find()
+#     print(users)
+#     for user in users:
+#         automatedMessagesCollection.delete_many({"_id": ObjectId(user["_id"])})
+#         res = openaiinternal.chatgptcall(user, 3, utilsCollection)
+#         # print(res)
+#         # time.sleep(1)
+#         print(user)
+#
+#         userData = {
+#             "_id" : user["_id"],
+#             "name": user["name"],
+#             "aiMessages" : res,
+#             "aiMessageToSend" : res[0] if len(res) > 0 else None
+#         }
+#
+#         automatedMessagesCollection.insert_one(userData)
+#         time.sleep(2)
+
+
+def store_ai_messages(users, collection, automatedMessagesCollection, utilsCollection) -> None:
+
     for user in users:
-        automatedMessagesCollection.delete_many({"_id": ObjectId(user["_id"])})
-        res = openaiinternal.chatgptcall(user, 3, utilsCollection)
+        doc = collection.find_one({"name": user["name"], "lastMessageShownOnHinge" : user["lastMessageShownOnHinge"]})
+
+        automatedMessagesCollection.delete_many({"_id": doc["_id"]})
+        res = openaiinternal.chatgptcall(doc, 3, utilsCollection)
         # print(res)
         # time.sleep(1)
         print(user)
 
         userData = {
-            "_id" : user["_id"],
-            "name": user["name"],
-            "aiMessages" : res,
-            "aiMessageToSend" : res[0] if len(res) > 0 else None
+            "_id": doc["_id"],
+            "name": doc["name"],
+            "aiMessages": res,
+            "aiMessageToSend": res[0] if len(res) > 0 else None
         }
 
         automatedMessagesCollection.insert_one(userData)
