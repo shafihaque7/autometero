@@ -95,9 +95,26 @@ appium_server_url = 'http://104.42.212.81:4723'
 # driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
 @app.route("/")
 def get_all_users():
+    docs = collection.find()
+    docs = sorted(docs, key=lambda doc: doc["lastUpdated"], reverse=True)[:10]
+
+    # find all of your turn
+    myTurn = []
+    theirTurn = []
+
+    for doc in docs:
+        if doc["messages"] == [] or doc["messages"][-1]["user"] != "You":
+            myTurn.append(doc)
+        else:
+            theirTurn.append(doc)
+
+    myTurn.sort(key=lambda doc: doc["lastUpdated"], reverse=True)
+    theirTurn.sort(key=lambda doc: doc["lastUpdated"], reverse=True)
+
+    allList = myTurn + theirTurn
     res = []
 
-    for user in collection.find():
+    for user in allList:
         data = {
             "id": str(user["_id"]),
             "name": user["name"],

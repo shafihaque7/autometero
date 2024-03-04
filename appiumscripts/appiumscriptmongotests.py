@@ -108,6 +108,40 @@ class TestAppium(unittest.TestCase):
         docs = utilsCollection.find()
         print(docs[0]["lastUpdatedTimeForScraper"])
 
+    def test_collection_sort_by(self):
+
+        # First prioritize all of the Your turn one's
+
+        docs = collection.find()
+        docs = sorted(docs, key= lambda doc: doc["lastUpdated"], reverse=True)[:10]
+
+        # find all of your turn
+        myTurn = []
+        theirTurn = []
+
+        for doc in docs:
+            if doc["messages"] == [] or doc["messages"][-1]["user"] != "You":
+                myTurn.append(doc)
+            else:
+                theirTurn.append(doc)
+
+        myTurn.sort(key=lambda doc: doc["lastUpdated"], reverse=True)
+        theirTurn.sort(key=lambda doc: doc["lastUpdated"], reverse=True)
+
+        allList = myTurn + theirTurn
+
+        for doc in allList:
+            print(doc)
+
+
+
+
+
+        # docsSorted = sorted(docs, key= lambda doc: doc["lastUpdated"], reverse=True)[:10]
+
+        # for doc in docsSorted:
+        #     print(doc)
+
 
     def test_get_all_elements(self) -> None:
         size = self.driver.get_window_size()
