@@ -67,5 +67,9 @@ screen -XS <session-id> quit
 screen -ls
 screen -r 
 
+# Nginx stuff
+sudo systemctl restart nginx
+
+
 
 

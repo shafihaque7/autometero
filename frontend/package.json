@@ -1,11 +1,10 @@
 {
   "name": "Avian",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
+    "dev": "vite --host",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -20,6 +19,7 @@
     "linkifyjs": "^4.1.1",
     "pinia": "^2.1.6",
     "prettier": "^3.0.3",
+    "register-service-worker": "^1.7.2",
     "tailwind-merge": "^1.14.0",
     "video.js": "^8.5.2",
     "vue": "^3.3.4",
@@ -32,6 +32,7 @@
     "@types/node": "^20.6.0",
     "@types/video.js": "7.x",
     "@vitejs/plugin-vue": "^4.3.4",
+    "@vue/cli-plugin-pwa": "~5.0.0",
     "@vue/eslint-config-prettier": "^8.0.0",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.49.0",
@@ -41,5 +42,6 @@
     "typescript": "^5.2.2",
     "vite": "^4.4.9",
     "vue-tsc": "^1.8.10"
-  }
+  },
+  "type": "module"
 }
