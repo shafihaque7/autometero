@@ -68,8 +68,13 @@ screen -ls
 screen -r 
 
 # Nginx stuff
+sudo systemctl restart myproject
+
 sudo systemctl restart nginx
 
+sudo systemctl daemon-reload
 
 
+sudo systemctl stop backend
+sudo systemctl disable backend
 
