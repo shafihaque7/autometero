@@ -3,6 +3,7 @@ import "@src/style.css";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
 import vClickOutside from "click-outside-vue3";
+import './registerServiceWorker';
 
 import App from "@src/App.vue";
 
