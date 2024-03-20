@@ -19,9 +19,11 @@ const store = useStore();
 const changeSelectedConversation = async () => {
   console.log("fsdfds",props.notification.objectId)
   const conversationId = getConversationIdFromObjectId(props.notification.objectId)
-  const conversationIndex = getConversationIndex(conversationId)
+  if (conversationId != null) {
+    const conversationIndex = getConversationIndex(conversationId);
 
-      const axiosData = await axios.get("http://104.42.212.81:8080/user/" + props.notification.objectId)
+    if (conversationIndex != null) {
+      const axiosData = await axios.get("https://hingeauto.co/user/" + props.notification.objectId)
       const serverMessages = axiosData.data["messages"]
       console.log(serverMessages)
       const allMessages: IMessage[] = []
@@ -53,10 +55,13 @@ const changeSelectedConversation = async () => {
       store.conversations[conversationIndex].messages = allMessages
 
 
+      // Figure this shit out it doesn't make sense
+      store.activeConversationId = conversationId + 1;
+      store.conversationOpen = "open";
+    }
+  }
 
-  // Figure this shit out it doesn't make sense
-  store.activeConversationId = conversationId + 1;
-  store.conversationOpen = "open";
+
   // props.handleConversationChange(3);
 }
 </script>

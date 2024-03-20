@@ -40,7 +40,7 @@ const loading = ref(false);
 const handleSubmit = async () => {
   loading.value = true;
 
-  const axiosData = await axios.post("http://104.42.212.81:8080/ai/updatePrompt", {
+  const axiosData = await axios.post("https://hingeauto.co/ai/updatePrompt", {
     "updatedPrompt": chatgptPrompt.value,
   })
 
@@ -53,7 +53,7 @@ const lastUpdatedDateAndTime = ref("")
 const chatgptPrompt = ref("")
 
 const loadLastUpdated = async () => {
-  const axiosData = await axios.get("http://104.42.212.81:8080/getLastUpdated")
+  const axiosData = await axios.get("https://hingeauto.co/getLastUpdated")
   let lastUpdatedString = axiosData.data["lastUpdatedTimeForScraper"]
 
 
@@ -69,7 +69,7 @@ const loadLastUpdated = async () => {
 const runAutoScraper = async () => {
   console.log("Running autoscraper")
   loading.value = true
-  const axiosData = await axios.post("http://104.42.212.81:8080/runautoscraper", {})
+  const axiosData = await axios.post("https://hingeauto.co/runautoscraper", {})
   loading.value = false
   lastUpdatedDateAndTime.value = axiosData.data["lastUpdatedTimeForScraper"]
 

@@ -425,7 +425,7 @@ export const attachments = [
   },
 ];
 
-const allUsersResponse = await axios.get("http://104.42.212.81:8080")
+const allUsersResponse = await axios.get("https://hingeauto.co")
 const allUsers = allUsersResponse.data
 let idNumber = 1
 let contactsNumber :number = 11
@@ -480,7 +480,7 @@ allUsers.forEach(function(user: any){
 })
 
 // const allNotificationsResponse = await axios.get("http://127.0.0.1:8080/ai/notifications")
-const allNotificationsResponse = await axios.get("http://104.42.212.81:8080/ai/notifications")
+const allNotificationsResponse = await axios.get("https://hingeauto.co/ai/notifications")
 const allNotifications = allNotificationsResponse.data
 allNotifications.forEach(function(user: any){
   const notificationData : INotification = {

@@ -67,7 +67,7 @@ const closeComposeModal = () => {
 const lastUpdatedDateAndTime = ref("")
 
 const loadLastUpdated = async () => {
-  const axiosData = await axios.get("http://104.42.212.81:8080/getLastUpdated")
+  const axiosData = await axios.get("https://hingeauto.co/getLastUpdated")
 
   let lastUpdatedString = axiosData.data["lastUpdatedTimeForScraper"]
 

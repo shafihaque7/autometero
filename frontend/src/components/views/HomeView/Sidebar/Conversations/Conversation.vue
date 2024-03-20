@@ -76,7 +76,7 @@ const handleSelectConversation = async () => {
     if (conversationIndex !== undefined) {
       const currentConversation = store.conversations[conversationIndex];
       if (currentConversation.objectId !== undefined) {
-      const axiosData = await axios.get("http://104.42.212.81:8080/user/" + currentConversation.objectId)
+      const axiosData = await axios.get("https://hingeauto.co/user/" + currentConversation.objectId)
       const serverMessages = axiosData.data["messages"]
       console.log(serverMessages)
       console.log(currentConversation)

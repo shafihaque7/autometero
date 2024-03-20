@@ -77,7 +77,7 @@ const reloadConversation = async () => {
   // activeConversation.messages[0].content = "Checking if changed work"
 
   const conversationObjectId = getConversationObjectId(activeConversation.id)
-  const axiosData = await axios.post("http://104.42.212.81:8080/appium/refreshUserMessage", {
+  const axiosData = await axios.post("https://hingeauto.co/appium/refreshUserMessage", {
     "userId": conversationObjectId
   })
 
@@ -118,7 +118,7 @@ const refreshAiData = async () => {
   if (conversationObjectId !== undefined) {
     console.log("conversation object id is", conversationObjectId)
 
-    const axiosData = await axios.get("http://104.42.212.81:8080/ai/refreshmessages/" + conversationObjectId)
+    const axiosData = await axios.get("https://hingeauto.co/ai/refreshmessages/" + conversationObjectId)
     // const axiosData = await axios.get("http://127.0.0.1:8080/ai/user/" + conversationObjectId)
     // console.log(axiosData.data)
 
