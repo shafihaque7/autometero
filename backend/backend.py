@@ -225,6 +225,12 @@ def check_async():
     abar("ssss")
     return "OK"
 
+@app.route("/storeNotificationToken", methods=['POST'])
+def storeNotificationToken():
+    data = request.json
+    storedToken = data.get('token')
+    return "the stored token is" + storedToken
+
 @app.route("/appium/sendtext", methods=['POST'])
 def send_text():
     driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
@@ -361,5 +367,5 @@ def get_appium_users():
 if __name__ == "__main__":
     # app.run(debug=True, port=5000)
     # app.run()
-    # app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
-    app.run(host='0.0.0.0')
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    # app.run(host='0.0.0.0')
