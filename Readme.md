@@ -68,7 +68,8 @@ screen -ls
 screen -r 
 
 # Nginx stuff
-sudo systemctl restart myproject
+# After code change run this command
+sudo systemctl restart backend
 
 sudo systemctl restart nginx
 

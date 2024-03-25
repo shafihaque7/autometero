@@ -229,7 +229,7 @@ def check_async():
 def storeNotificationToken():
     data = request.json
     storedToken = data.get('token')
-    return "the stored token is" + storedToken
+    return "the stored token is updated and is" + storedToken
 
 @app.route("/appium/sendtext", methods=['POST'])
 def send_text():

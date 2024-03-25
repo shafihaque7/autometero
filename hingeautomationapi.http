@@ -17,6 +17,14 @@ Content-Type: application/json
 }
 
 ###
+POST https://hingeauto.co/storeNotificationToken
+Content-Type: application/json
+
+{
+  "token": "niceToken"
+}
+
+###
 POST http://127.0.0.1:8080/appium/refreshUserMessage
 Content-Type: application/json
 

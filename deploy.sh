@@ -7,4 +7,6 @@ expect "armvmhingeserver"
 send "cd hingeautomation/\r"
 expect "~/hingeautomation"
 send "git pull\r"
+expect "~/hingeautomation"
+send "sudo systemctl restart backend\r"
 interact
