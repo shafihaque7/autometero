@@ -1,1 +1,6 @@
-ssh azureuser@104.42.212.81
+#!/usr/bin/expect
+
+spawn ssh azureuser@104.42.212.81
+expect "password:"
+send "Santunu12345\r"
+interact

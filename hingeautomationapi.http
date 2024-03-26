@@ -21,7 +21,7 @@ POST https://hingeauto.co/storeNotificationToken
 Content-Type: application/json
 
 {
-  "token": "niceToken"
+  "token": "token from server"
 }
 
 ###
