@@ -68,6 +68,10 @@ const requestPermission = () => {
 
 }
 
+const testNotification = async() => {
+  const axiosData = await axios.post("http://127.0.0.1:8080/testNotification", {})
+}
+
 
 
 </script>
@@ -92,6 +96,11 @@ const requestPermission = () => {
 
     <Button class="w-full py-4" @click="requestPermission">
       Request Notification Permission
+    </Button>
+    <br>
+
+    <Button class="w-full py-4" @click="testNotification">
+      Test Notification
     </Button>
     <br>
 
