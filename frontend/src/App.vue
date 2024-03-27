@@ -61,72 +61,34 @@ onMessage(messaging, (payload) => {
   // ...
 });
 
-// getToken(messaging, { vapidKey: 'BPSCfFSbBnxGp_5BcJfO5nl4gnlf3bzweImAlk0Q1UhmYAB-1EP4IEidL5cOa99Ulmsg23868xkeejDWiInBrtc' }).then((currentToken) => {
-//   if (currentToken) {
-//     // Send the token to your server and update the UI if necessary
-//     console.log("Token is:",currentToken);
-//     axios.post('https://hingeauto.co/storeNotificationToken', {
-//       token: currentToken
-//     })
-//       .then(function (response) {
-//         console.log(response);
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-//
-//
-//
-//     // ...
-//   } else {
-//     // Show permission request UI
-//     console.log('No registration token available. Request permission to generate one.');
-//     // ...
-//   }
-// }).catch((err) => {
-//   console.log('An error occurred while retrieving token. ', err);
-//   // ...
-// });
-
-
-const requestPermission = () => {
-  console.log("Requesting permission...")
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log("Permission granted")
-
-      getToken(messaging, { vapidKey: 'BPSCfFSbBnxGp_5BcJfO5nl4gnlf3bzweImAlk0Q1UhmYAB-1EP4IEidL5cOa99Ulmsg23868xkeejDWiInBrtc' }).then((currentToken) => {
-        if (currentToken) {
-          // Send the token to your server and update the UI if necessary
-          console.log("Token is:",currentToken);
-          axios.post('https://hingeauto.co/storeNotificationToken', {
-            token: currentToken
-          })
-            .then(function (response) {
-              console.log(response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-          // ...
-        } else {
-          // Show permission request UI
-          console.log('No registration token available. Request permission to generate one.');
-          // ...
-        }
-      }).catch((err) => {
-        console.log('An error occurred while retrieving token. ', err);
-        // ...
+getToken(messaging, { vapidKey: 'BPSCfFSbBnxGp_5BcJfO5nl4gnlf3bzweImAlk0Q1UhmYAB-1EP4IEidL5cOa99Ulmsg23868xkeejDWiInBrtc' }).then((currentToken) => {
+  if (currentToken) {
+    // Send the token to your server and update the UI if necessary
+    console.log("Token is:",currentToken);
+    axios.post('https://hingeauto.co/storeNotificationToken', {
+      token: currentToken
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
       });
 
 
-    }
-    else {
-      console.log("Permission not granted")
-    }
-  } )
 
-}
+    // ...
+  } else {
+    // Show permission request UI
+    console.log('No registration token available. Request permission to generate one.');
+    // ...
+  }
+}).catch((err) => {
+  console.log('An error occurred while retrieving token. ', err);
+  // ...
+});
+
+
 
 
 
@@ -182,9 +144,9 @@ onUnmounted(() => {
       :style="{ height: height }"
     >
 
-      <Button class="w-full py-4" @click="requestPermission">
-        Allow Notification
-      </Button>
+<!--      <Button class="w-full py-4" @click="requestPermission">-->
+<!--        Allow Notification-->
+<!--      </Button>-->
       <router-view v-slot="{ Component }">
         <FadeTransition>
           <component :is="Component" />

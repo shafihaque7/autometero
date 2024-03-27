@@ -5,7 +5,7 @@ cred = credentials.Certificate("firebase-admin-credential.json")
 firebase_admin.initialize_app(cred)
 
 tokens = [
-    "e-QLDVlPkFHQX65h4eoBWG:APA91bFvoDzURmc6QenaVcfjU5693eqk5XcJ1BqRTYEiePn6nfjevnvoxvRlWpmviWgNlkljix7pKun2bDFwvSf7n708jKT42_LjSlYz8KP01aKnrT936mTYWhVmjAMJ-ysg5jSGIUca"]
+    "eqhgvVpD8EMRvOoSkw-xZ4:APA91bEhIzWIFqGdk2-xCwyV64XWACitqRba0QWQt5Whip6qzCRdSOZRD_RgDJxjz9xdxEgK6RTsrDSnJStt2Sz_gBJ6CB65_pI6JN3PAIkY6btliPI8_jkqJJbJXgO4WpU7S-NnsmMB"]
 
 message = messaging.MulticastMessage(
     notification=messaging.Notification(

@@ -15,6 +15,11 @@ import re
 from appiumscripts import *
 import asyncio
 loop = asyncio.get_event_loop()
+import firebase_admin
+from firebase_admin import credentials, messaging
+
+cred = credentials.Certificate("../firebase-admin-credential.json")
+firebase_admin.initialize_app(cred)
 
 
 # Flask initialization
@@ -238,6 +243,23 @@ def storeNotificationToken():
 
 
     return "the stored token is updated and is " + storedToken
+
+@app.route("/testNotification", methods=['POST'])
+def testNotification():
+    doc = utilsCollection.find()[0]
+    token = doc["token"]
+    tokens = [token]
+    message = messaging.MulticastMessage(
+        notification=messaging.Notification(
+            title="Notification Test",
+            body="Notification Test Body"
+        ),
+        tokens=tokens
+    )
+    messaging.send_multicast(message)
+
+    return token
+
 
 @app.route("/appium/sendtext", methods=['POST'])
 def send_text():
