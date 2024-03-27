@@ -69,7 +69,7 @@ const requestPermission = () => {
 }
 
 const testNotification = async() => {
-  const axiosData = await axios.post("http://127.0.0.1:8080/testNotification", {})
+  const axiosData = await axios.post("https://hingeauto.co/testNotification", {})
 }
 
 

@@ -209,15 +209,23 @@ def refresh_ai_messages_for_user(user_id):
 
 @app.route("/ai/notifications")
 def get_ai_notifications():
+    docMap = {}
+    docs = collection.find()
+    for doc in docs:
+        docMap[str(doc["_id"])] = doc["unread"]
+
+
     users = automatedMessagesCollection.find()
     res = []
     for user in users:
-        data = {
-            "_id" : str(user["_id"]),
-            "name" : user["name"],
-            "aiMessageToSend" : user["aiMessageToSend"]
-        }
-        res.append(data)
+
+        if docMap[str(user["_id"])] is not None and docMap[str(user["_id"])] == 1:
+            data = {
+                "_id" : str(user["_id"]),
+                "name" : user["name"],
+                "aiMessageToSend" : user["aiMessageToSend"]
+            }
+            res.append(data)
     return res
 
 async def abar(a):

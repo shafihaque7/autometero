@@ -108,6 +108,9 @@ class TestAppium(unittest.TestCase):
         docs = utilsCollection.find()
         print(docs[0]["lastUpdatedTimeForScraper"])
 
+    def test_stop_currently_running_last_updated(self):
+        store_timestamp(utilsCollection)
+
     def test_collection_sort_by(self):
 
         # First prioritize all of the Your turn one's
@@ -219,6 +222,7 @@ class TestAppium(unittest.TestCase):
 
     def test_delete_collection(self) -> None:
         collection.delete_many({})
+        automatedMessagesCollection.delete_many({})
 
     def test_store_ai_messages(self) -> None:
         # users = collection.find({"unread" : 1})

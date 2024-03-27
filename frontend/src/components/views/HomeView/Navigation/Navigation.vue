@@ -70,7 +70,7 @@ const handleActiveSidebarComponentChange = (value: string) => {
           </li>
 
           <!--notifications button-->
-          <li class="xs:hidden md:inline">
+          <li class="md:inline">
             <NavLink
               :icon="BellIcon"
               title="Notifications"
@@ -81,7 +81,7 @@ const handleActiveSidebarComponentChange = (value: string) => {
           </li>
 
           <!--voice call button-->
-          <li>
+          <li class="xs:hidden md:inline">
             <NavLink
               :icon="PhoneIcon"
               title="Call log"
