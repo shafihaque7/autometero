@@ -5,6 +5,7 @@ import time
 import openaiinternal
 from bson.objectid import ObjectId
 from datetime import datetime
+from firebase_admin import credentials, messaging
 
 from appium.webdriver.common.appiumby import AppiumBy
 def scroll_up_to_top(driver) -> None:
@@ -42,6 +43,54 @@ async def async_scroll_up_to_top(driver) -> None:
                 break
         except:
             continue
+
+
+def get_ai_messages_to_send(collection, automatedMessagesCollection):
+    docMap = {}
+    docs = collection.find()
+    for doc in docs:
+        docMap[str(doc["_id"])] = doc["unread"]
+
+    users = automatedMessagesCollection.find()
+    res = []
+    for user in users:
+
+        if docMap[str(user["_id"])] is not None and docMap[str(user["_id"])] != 0:
+            dateTimeObject = datetime.strptime(user["sendTime"], "%m/%d/%Y %I:%M:%S %p")
+
+            diff = dateTimeObject - datetime.now()
+            days, seconds = diff.days, diff.seconds
+            hours = days * 24 + seconds // 3600
+            minutes = (seconds % 3600) // 60
+            seconds = seconds % 60
+
+            # print(hours, minutes, seconds)
+            countDownDeltaInHours = hours + (minutes / 60) + (seconds / 3600)
+            # print(countDownDeltaInHours)
+
+            data = {
+                "_id": str(user["_id"]),
+                "name": user["name"],
+                "aiMessageToSend": user["aiMessageToSend"],
+                "countDownDeltaInHours": countDownDeltaInHours
+            }
+            res.append(data)
+    return res
+
+def send_notification(utilsCollection, title, body):
+    doc = utilsCollection.find()[0]
+    token = doc["token"]
+    tokens = [token]
+    message = messaging.MulticastMessage(
+        notification=messaging.Notification(
+            title=title,
+            body=body
+        ),
+        tokens=tokens
+    )
+    messaging.send_multicast(message)
+
+    return token
 
 
 

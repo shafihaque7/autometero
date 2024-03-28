@@ -209,40 +209,7 @@ def refresh_ai_messages_for_user(user_id):
 
 @app.route("/ai/notifications")
 def get_ai_notifications():
-    docMap = {}
-    docs = collection.find()
-    for doc in docs:
-        docMap[str(doc["_id"])] = doc["unread"]
-
-
-    users = automatedMessagesCollection.find()
-    res = []
-    for user in users:
-
-        if docMap[str(user["_id"])] is not None and docMap[str(user["_id"])] != 0:
-
-            dateTimeObject = datetime.strptime(user["sendTime"], "%m/%d/%Y %I:%M:%S %p")
-
-            diff = dateTimeObject - datetime.now()
-            days, seconds = diff.days, diff.seconds
-            hours = days * 24 + seconds // 3600
-            minutes = (seconds % 3600) // 60
-            seconds = seconds % 60
-
-            # print(hours, minutes, seconds)
-            countDownDeltaInHours = hours + (minutes/60) + (seconds/3600)
-            # print(countDownDeltaInHours)
-
-
-
-            data = {
-                "_id" : str(user["_id"]),
-                "name" : user["name"],
-                "aiMessageToSend" : user["aiMessageToSend"],
-                "countDownDeltaInHours" : countDownDeltaInHours
-            }
-            res.append(data)
-    return res
+    return get_ai_messages_to_send(collection, automatedMessagesCollection)
 
 async def abar(a):
     time.sleep(10)
@@ -270,19 +237,7 @@ def storeNotificationToken():
 
 @app.route("/testNotification", methods=['POST'])
 def testNotification():
-    doc = utilsCollection.find()[0]
-    token = doc["token"]
-    tokens = [token]
-    message = messaging.MulticastMessage(
-        notification=messaging.Notification(
-            title="Notification Test",
-            body="Notification Test Body"
-        ),
-        tokens=tokens
-    )
-    messaging.send_multicast(message)
-
-    return token
+    return send_notification(utilsCollection, "Notification test", "Notification body")
 
 
 @app.route("/appium/sendtext", methods=['POST'])

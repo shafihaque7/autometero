@@ -8,6 +8,7 @@ import openaiinternal
 from bson.objectid import ObjectId
 from datetime import datetime, timedelta
 import sys
+import firebase_admin
 
 from selenium.webdriver.common.by import By
 
@@ -146,6 +147,15 @@ class TestAppium(unittest.TestCase):
 
         for doc in allList:
             print(doc)
+
+    def test_notification_for_all_ai_messages(self):
+        cred = credentials.Certificate("../firebase-admin-credential.json")
+        firebase_admin.initialize_app(cred)
+        allAIMessagesToSend = get_ai_messages_to_send(collection, automatedMessagesCollection)
+        for message in allAIMessagesToSend:
+            send_notification(utilsCollection, "Sending message to "+ message["name"], message["aiMessageToSend"])
+            time.sleep(5)
+
 
 
 

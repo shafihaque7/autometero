@@ -488,7 +488,7 @@ allNotifications.forEach(function(user: any){
     flag: "added-to-group",
     title: "Message being sent to " + user["name"] + " in ",
     message: user["aiMessageToSend"],
-    sendTime: user["sendTime"]
+    countDownDeltaInHours: user["countDownDeltaInHours"]
   }
 
 
