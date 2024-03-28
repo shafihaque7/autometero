@@ -223,7 +223,8 @@ def get_ai_notifications():
             data = {
                 "_id" : str(user["_id"]),
                 "name" : user["name"],
-                "aiMessageToSend" : user["aiMessageToSend"]
+                "aiMessageToSend" : user["aiMessageToSend"],
+                "sendTime" : user["sendTime"]
             }
             res.append(data)
     return res

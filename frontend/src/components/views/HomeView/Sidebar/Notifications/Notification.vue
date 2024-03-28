@@ -2,6 +2,9 @@
 import type { IMessage, INotification } from "@src/types";
 import axios from "axios"
 import Typography from "@src/components/ui/data-display/Typography.vue";
+import { computed } from "vue";
+import VueCountdown from '@chenfengyuan/vue-countdown';
+
 import {
   ArrowPathIcon,
   LockClosedIcon,
@@ -15,6 +18,8 @@ const props = defineProps<{
 }>();
 
 const store = useStore();
+
+
 
 const changeSelectedConversation = async () => {
   console.log("fsdfds",props.notification.objectId)
@@ -104,6 +109,10 @@ const changeSelectedConversation = async () => {
     <div class="grow" @click="changeSelectedConversation">
       <Typography variant="heading-2" class="mb-4">
         {{ props.notification.title }}
+        <vue-countdown :time="2 * 60 * 60 * 1000" v-slot="{ hours, minutes, seconds }">
+          {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
+        </vue-countdown>
+
       </Typography>
 
       <Typography variant="body-2">

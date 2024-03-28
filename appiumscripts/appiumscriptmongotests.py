@@ -6,7 +6,7 @@ from appium.webdriver.common.appiumby import AppiumBy
 from datetime import datetime
 import openaiinternal
 from bson.objectid import ObjectId
-from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 
 from selenium.webdriver.common.by import By
@@ -110,6 +110,17 @@ class TestAppium(unittest.TestCase):
 
     def test_stop_currently_running_last_updated(self):
         store_timestamp(utilsCollection)
+
+    def test_set_time_for_automated_messages_collection(self):
+        dt_string = (datetime.now() + timedelta(hours=3)).strftime("%I:%M:%S %p")
+        print(dt_string)
+        docs = automatedMessagesCollection.find()
+        for doc in docs:
+
+            sendTime = {
+                "sendTime": dt_string
+            }
+            automatedMessagesCollection.update_one(doc, {"$set": sendTime})
 
     def test_collection_sort_by(self):
 
