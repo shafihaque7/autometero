@@ -109,7 +109,7 @@ const changeSelectedConversation = async () => {
     <div class="grow" @click="changeSelectedConversation">
       <Typography variant="heading-2" class="mb-4">
         {{ props.notification.title }}
-        <vue-countdown :time="2 * 60 * 60 * 1000" v-slot="{ hours, minutes, seconds }">
+        <vue-countdown :time="props.notification.sendTime * 60 * 60 * 1000" v-slot="{ hours, minutes, seconds }">
           {{ hours }} hours, {{ minutes }} minutes, {{ seconds }} seconds.
         </vue-countdown>
 

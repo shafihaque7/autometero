@@ -490,8 +490,7 @@ allNotifications.forEach(function(user: any){
     message: user["aiMessageToSend"],
     sendTime: user["sendTime"]
   }
-  var target = new Date("1970-01-01T " + user["sendTime"]);
-  console.log(target)
+
 
   notifications.push(notificationData)
 })

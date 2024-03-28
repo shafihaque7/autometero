@@ -239,7 +239,7 @@ def get_ai_notifications():
                 "_id" : str(user["_id"]),
                 "name" : user["name"],
                 "aiMessageToSend" : user["aiMessageToSend"],
-                "sendTime" : countDownDeltaInHours
+                "countDownDeltaInHours" : countDownDeltaInHours
             }
             res.append(data)
     return res
