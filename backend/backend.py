@@ -219,12 +219,27 @@ def get_ai_notifications():
     res = []
     for user in users:
 
-        if docMap[str(user["_id"])] is not None and docMap[str(user["_id"])] == 1:
+        if docMap[str(user["_id"])] is not None and docMap[str(user["_id"])] != 0:
+
+            dateTimeObject = datetime.strptime(user["sendTime"], "%m/%d/%Y %I:%M:%S %p")
+
+            diff = dateTimeObject - datetime.now()
+            days, seconds = diff.days, diff.seconds
+            hours = days * 24 + seconds // 3600
+            minutes = (seconds % 3600) // 60
+            seconds = seconds % 60
+
+            # print(hours, minutes, seconds)
+            countDownDeltaInHours = hours + (minutes/60) + (seconds/3600)
+            # print(countDownDeltaInHours)
+
+
+
             data = {
                 "_id" : str(user["_id"]),
                 "name" : user["name"],
                 "aiMessageToSend" : user["aiMessageToSend"],
-                "sendTime" : user["sendTime"]
+                "sendTime" : countDownDeltaInHours
             }
             res.append(data)
     return res

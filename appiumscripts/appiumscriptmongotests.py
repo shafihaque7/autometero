@@ -112,7 +112,7 @@ class TestAppium(unittest.TestCase):
         store_timestamp(utilsCollection)
 
     def test_set_time_for_automated_messages_collection(self):
-        dt_string = (datetime.now() + timedelta(hours=3)).strftime("%I:%M:%S %p")
+        dt_string = (datetime.now() + timedelta(hours=3)).strftime("%m/%d/%Y %I:%M:%S %p")
         print(dt_string)
         docs = automatedMessagesCollection.find()
         for doc in docs:

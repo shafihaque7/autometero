@@ -83,6 +83,7 @@ export interface INotification {
   flag: string;
   title: string;
   message: string;
+  sendTime: string;
 }
 
 export interface ISettings {

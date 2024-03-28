@@ -117,6 +117,7 @@ const changeSelectedConversation = async () => {
 
       <Typography variant="body-2">
         {{ props.notification.message }}
+<!--        {{ props.notification.sendTime}}-->
       </Typography>
     </div>
   </div>
