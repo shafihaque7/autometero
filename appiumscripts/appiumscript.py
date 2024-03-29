@@ -6,6 +6,7 @@ import openaiinternal
 from bson.objectid import ObjectId
 from datetime import datetime
 from firebase_admin import credentials, messaging
+from datetime import datetime, timedelta
 
 from appium.webdriver.common.appiumby import AppiumBy
 def scroll_up_to_top(driver) -> None:
@@ -350,14 +351,19 @@ def store_ai_messages(users, collection, automatedMessagesCollection, utilsColle
         # time.sleep(1)
         print(user)
 
+        dt_string = (datetime.now() + timedelta(hours=3)).strftime("%m/%d/%Y %I:%M:%S %p")
+
         userData = {
             "_id": doc["_id"],
             "name": doc["name"],
             "aiMessages": res,
-            "aiMessageToSend": res[0] if len(res) > 0 else None
+            "aiMessageToSend": res[0] if len(res) > 0 else None,
+            "sendTime": dt_string
         }
 
         automatedMessagesCollection.insert_one(userData)
+        send_notification(utilsCollection, "Sending Notification to " + doc["name"] + "in 3 hours!",
+                          doc["aiMessageToSend"])
         time.sleep(2)
 
 def enable_currently_running_status(utilsCollection):
