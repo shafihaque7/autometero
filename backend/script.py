@@ -8,6 +8,11 @@ from datetime import datetime
 
 from appium.webdriver.common.appiumby import AppiumBy
 from appiumscripts import *
+from firebase_admin import credentials, messaging
+import firebase_admin
+
+cred = credentials.Certificate("../firebase-admin-credential.json")
+firebase_admin.initialize_app(cred)
 
 # Database connection stuff
 CONNECTION_STRING = "mongodb://hingeautomation:ti00pSXB7n8NGKPpDHPU0yjtrelS8N99zLf7pDNYtuEGC96mgkg2hgBh5hzoFVow6EBOJES1cpXZACDbatPdqg==@hingeautomation.mongo.cosmos.azure.com:10255/?ssl=true&retrywrites=false&replicaSet=globaldb&maxIdleTimeMS=120000&appName=@hingeautomation@"

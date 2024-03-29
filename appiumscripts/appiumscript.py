@@ -72,6 +72,7 @@ def get_ai_messages_to_send(collection, automatedMessagesCollection):
                 "_id": str(user["_id"]),
                 "name": user["name"],
                 "aiMessageToSend": user["aiMessageToSend"],
+                "sendTime": user["sendTime"],
                 "countDownDeltaInHours": countDownDeltaInHours
             }
             res.append(data)
