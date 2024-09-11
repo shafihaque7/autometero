@@ -22,7 +22,7 @@ import {
 import Typography from "@src/components/ui/data-display/Typography.vue";
 import Dropdown from "@src/components/ui/navigation/Dropdown/Dropdown.vue";
 import DropdownLink from "@src/components/ui/navigation/Dropdown/DropdownLink.vue";
-import { conversations } from "@src/store/defaults";
+import { conversations, imgUrls } from "@src/store/defaults";
 
 const props = defineProps<{
   conversation: IConversation;
@@ -88,7 +88,7 @@ const handleSelectConversation = async () => {
           id: idCounter++,
           content:
             msg["message"],
-          date: "5:00 pm",
+          date: "",
           state: "read",
           sender: {
             id: (msg["user"] == "You") ? 1 : currentConversation.contacts[0].id,
@@ -97,7 +97,7 @@ const handleSelectConversation = async () => {
             lastSeen: new Date(),
             email: "sabrina@gmail.com",
             avatar:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+              imgUrls[conversationIndex],
           }
 
         }

@@ -24,7 +24,7 @@ export const user = {
   lastName: "Sabrina",
   email: "sabrina@gmail.com",
   avatar:
-    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+    "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2Fme.JPG?alt=media&token=e79e9d3d-3ca3-41fb-a205-1ed84ce4985d",
   token: "fakeToken",
   contacts: [
     {
@@ -362,6 +362,19 @@ export const activeCall = {
   adminIds: [1],
 };
 
+export const imgUrls = ["https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F1_Hinge_Automation.jpg?alt=media&token=e0423bb7-562a-4c8d-a214-0aae00ce5450",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F2_Hinge_Automation.jpg?alt=media&token=076ddbb3-fbf0-4606-aefe-357080eefe10",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F3_Hinge_Automation.jpg?alt=media&token=edc315db-ee96-496a-bec9-d525c1afbdd6",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F4_Hinge_Automation.jpg?alt=media&token=0c4f5053-f8f8-43d8-b238-510e89175f9c",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F5_Hinge_Automation.jpg?alt=media&token=ccf0a94e-f3f3-481d-b029-b66c0410dcf9",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F6_Hinge_Automation.jpg?alt=media&token=58790217-77a1-4b42-850a-bcdfe58342e8",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F7_Hinge_Automation.jpg?alt=media&token=ce5512ca-79dd-4fa6-a77c-725c4e2616fc",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F8_Hinge_Automation.jpg?alt=media&token=ddeed6db-c333-40c8-97f2-8f80e4dc4965",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F9_Hinge_Automation.jpg?alt=media&token=fa927ecc-eafd-42b2-8612-8b2eabc92bf0",
+  "https://firebasestorage.googleapis.com/v0/b/faceclass-221a7.appspot.com/o/hingeautomation%2F10_Hinge_Automation.jpg?alt=media&token=f395914c-76fb-474a-b6eb-e22ca7126136"
+
+];
+
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const fetchData = async () => {
@@ -429,6 +442,12 @@ const allUsersResponse = await axios.get("https://hingeauto.co")
 const allUsers = allUsersResponse.data
 let idNumber = 1
 let contactsNumber :number = 11
+
+
+let imageIndexCount :number = 0
+
+
+
 allUsers.forEach(function(user: any){
   const userData: IConversation = {
     id: idNumber,
@@ -444,7 +463,7 @@ allUsers.forEach(function(user: any){
       lastName: "",
       lastSeen: new Date(),
       avatar:
-        "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        imgUrls[imageIndexCount]
     },
     {
       id: 1,
@@ -453,7 +472,7 @@ allUsers.forEach(function(user: any){
       lastSeen: new Date(),
       email: "sabrina@gmail.com",
       avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+        "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
     },
   ],
     messages: [
@@ -475,12 +494,16 @@ allUsers.forEach(function(user: any){
   ]
   }
   idNumber+=1
+  imageIndexCount += 1
   conversations.push(userData)
 
 })
 
 // const allNotificationsResponse = await axios.get("http://127.0.0.1:8080/ai/notifications")
 const allNotificationsResponse = await axios.get("https://hingeauto.co/ai/notifications")
+
+let countDownHours = [1.2, 1.3, 0.5,0.8,1.5, 1.8]
+let countDownIndex = 0
 const allNotifications = allNotificationsResponse.data
 allNotifications.forEach(function(user: any){
   const notificationData : INotification = {
@@ -488,8 +511,9 @@ allNotifications.forEach(function(user: any){
     flag: "added-to-group",
     title: "Message being sent to " + user["name"] + " in ",
     message: user["aiMessageToSend"],
-    countDownDeltaInHours: user["countDownDeltaInHours"]
+    countDownDeltaInHours: countDownHours[countDownIndex]
   }
+  countDownIndex += 1
 
 
   notifications.push(notificationData)
@@ -506,4 +530,5 @@ export default {
   calls,
   activeCall,
   user,
+  imgUrls,
 } as const;

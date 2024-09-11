@@ -74,8 +74,15 @@ const loadLastUpdated = async () => {
   if (axiosData.data["currentlyRunning"] == true) {
     lastUpdatedString += " (Currenly Running)"
   }
+
+  // Remove this code below, this is just putting the current date and time
+  lastUpdatedString = new Date().toLocaleString();
+
   // console.log(axiosData.data)
   lastUpdatedDateAndTime.value = lastUpdatedString
+
+
+
 }
 
 // if the active conversation is in the archive
@@ -94,7 +101,7 @@ onMounted(() => {
   <div>
     <SidebarHeader>
       <!--title-->
-      <template v-slot:lastUpdated>Last Updated : {{ lastUpdatedDateAndTime }}</template>
+      <template v-slot:lastUpdated>Last Updated: {{ lastUpdatedDateAndTime }}</template>
 
       <!--side actions-->
       <template v-slot:actions>

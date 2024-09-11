@@ -12,6 +12,7 @@ import {
 } from "@heroicons/vue/24/outline";
 import useStore from "@src/store/store";
 import { getConversationIdFromObjectId, getConversationIndex } from "@src/utils";
+import { imgUrls } from "@src/store/defaults";
 
 const props = defineProps<{
   notification: INotification;
@@ -39,7 +40,7 @@ const changeSelectedConversation = async () => {
           id: idCounter++,
           content:
             msg["message"],
-          date: "5:00 pm",
+          date: "",
           state: "read",
           sender: {
             id: (msg["user"] == "You") ? 1 : 45454,
@@ -48,7 +49,7 @@ const changeSelectedConversation = async () => {
             lastSeen: new Date(),
             email: "sabrina@gmail.com",
             avatar:
-              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+              imgUrls[conversationIndex],
           }
 
         }
