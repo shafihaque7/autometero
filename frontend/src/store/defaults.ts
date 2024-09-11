@@ -472,7 +472,7 @@ allUsers.forEach(function(user: any){
       lastSeen: new Date(),
       email: "sabrina@gmail.com",
       avatar:
-        "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+      imgUrls[imageIndexCount],
     },
   ],
     messages: [
@@ -488,7 +488,7 @@ allUsers.forEach(function(user: any){
         lastName: "",
         lastSeen: new Date(),
         avatar:
-          "https://images.unsplash.com/photo-1522556189639-b150ed9c4330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80",
+         imgUrls[imageIndexCount],
       },
     },
   ]
