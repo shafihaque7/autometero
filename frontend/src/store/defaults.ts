@@ -446,6 +446,8 @@ let contactsNumber :number = 11
 
 let imageIndexCount :number = 0
 
+let msgDates = ["6:00 am", "10:02 am", "12:32 pm", "1:23 pm", "5:02 pm", "12:21 pm", "1:55 pm", , "4:22 pm", "5:22 pm","5:32 pm", "8:02 pm", "11:23 pm"]
+
 
 
 allUsers.forEach(function(user: any){
@@ -479,7 +481,7 @@ allUsers.forEach(function(user: any){
     {
       id: 1,
       content: user["lastMessage"],
-      date: "1:00 pm",
+      date: msgDates[imageIndexCount],
       state: "read",
       sender: {
         id: contactsNumber+=1,
