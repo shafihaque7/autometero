@@ -209,7 +209,7 @@ const refreshAiData = async () => {
           tabindex="0"
           aria-label="Last seen december 16, 2019"
         >
-          Last seen Sep 10, 2024
+          Last seen Yesterday
         </Typography>
       </div>
     </div>
