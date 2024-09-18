@@ -1,3 +1,9 @@
+
+
+<img width="2056" alt="Screenshot 2024-09-18 at 12 06 06 PM" src="https://github.com/user-attachments/assets/77bcceab-abec-4c69-9440-fbde10bd0695">
+<img width="2056" alt="Screenshot 2024-09-18 at 12 06 39 PM" src="https://github.com/user-attachments/assets/1eef0003-d079-4bcc-882a-868c28000a16">
+
+
 # To SSH into the azure vm
 ssh azureuser@104.42.212.81
 
