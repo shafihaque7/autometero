@@ -20,8 +20,9 @@ Integrate AI to automatically send messages and schedule dates by learning and m
 # Enhanced User Experience
 * With automated, AI-generated messages that closely resemble the user’s typical communication style, the system delivers a seamless and personalized experience, ensuring that interactions remain engaging and relevant even when automated.
 
+----------------------------------
 
-
+# Dev Resources
 
 
 # To SSH into the azure vm
