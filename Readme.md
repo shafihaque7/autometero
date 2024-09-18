@@ -1,23 +1,27 @@
 
 
 
-## Autometero
-* Integrate AI to automatically send messages and schedule dates by learning and mimicking the user's messaging style, ensuring that automated messages are personalized and contextually appropriate.
+# Autometero
+Integrate AI to automatically send messages and schedule dates by learning and mimicking the user's messaging style, ensuring that automated messages are personalized and contextually appropriate.
 
 # Personalized Messaging Through Style Mimicry
-The AI learns and adapts to the user’s unique messaging style, capturing tone, phrasing, and preferences. By mimicking these characteristics, the system ensures that outgoing messages feel personal and authentic, maintaining a natural flow of conversation.
-
-# Contextually Relevant Responses
-AI analyzes past interactions and context, tailoring responses to fit the specific situation. This allows the system to send replies or initiate conversations that feel timely, appropriate, and aligned with ongoing communication threads.
-
-# Automated Date Scheduling
-Beyond messaging, the AI can set up dates based on user availability and preferences. This feature further enhances the convenience by managing time and event coordination efficiently, without the need for direct input from the user.
-
-# Enhanced User Experience
-With automated, AI-generated messages that closely resemble the user’s typical communication style, the system delivers a seamless and personalized experience, ensuring that interactions remain engaging and relevant even when automated.
+* The AI learns and adapts to the user’s unique messaging style, capturing tone, phrasing, and preferences. By mimicking these characteristics, the system ensures that outgoing messages feel personal and authentic, maintaining a natural flow of conversation.
 
 <img width="2056" alt="Screenshot 2024-09-18 at 12 06 06 PM" src="https://github.com/user-attachments/assets/77bcceab-abec-4c69-9440-fbde10bd0695">
+
+# Contextually Relevant Responses
+* AI analyzes past interactions and context, tailoring responses to fit the specific situation. This allows the system to send replies or initiate conversations that feel timely, appropriate, and aligned with ongoing communication threads.
+
 <img width="2056" alt="Screenshot 2024-09-18 at 12 06 39 PM" src="https://github.com/user-attachments/assets/1eef0003-d079-4bcc-882a-868c28000a16">
+
+# Automated Date Scheduling
+* Beyond messaging, the AI can set up dates based on user availability and preferences. This feature further enhances the convenience by managing time and event coordination efficiently, without the need for direct input from the user.
+
+# Enhanced User Experience
+* With automated, AI-generated messages that closely resemble the user’s typical communication style, the system delivers a seamless and personalized experience, ensuring that interactions remain engaging and relevant even when automated.
+
+
+
 
 
 # To SSH into the azure vm
